@@ -12,7 +12,7 @@ public class Point {
 
     /**
      * Constructor to initialize Point based on Double3
-     * @param point
+     * @param point in 3-dimensional space
      */
     public Point(Double3 point) {
         this.point = point;
