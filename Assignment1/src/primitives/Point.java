@@ -19,12 +19,13 @@ public class Point {
     }
 
     /**
-     * Constructor to initialize Point based on two numbers of type double
+     * Constructor to initialize Point based on three numbers of type double
      * @param num1 first point
      * @param num2 second point
+     * @param num3 third point
      */
-    public Point(double num1, double num2){
-        this.point = new Double3(num1, num2, 0);
+    public Point(double num1, double num2, double num3){
+        this.point = new Double3(num1, num2, num3);
     }
 
     /**
