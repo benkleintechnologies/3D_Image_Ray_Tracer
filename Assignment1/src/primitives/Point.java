@@ -42,7 +42,7 @@ public class Point {
      * @return Vector from second point to this point
      */
     public Vector subtract(Point p){
-        return new Vector(this.point.subtract(p.getPoint()));
+        return new Vector(point.subtract(p.getPoint()));
     }
 
     /**
@@ -60,8 +60,9 @@ public class Point {
      * @return distance squared as double
      */
     public double distanceSquared(Point p){
-        Double3 dif = this.point.subtract(p.getPoint());
-        return ((dif.d1*dif.d1) + (dif.d2*dif.d2) + (dif.d3*dif.d3));
+        Double3 dif = point.subtract(p.getPoint());
+        Double3 prod = dif.product(dif);
+        return (prod.d1 + prod.d2 + prod.d3);
     }
 
     /**
@@ -70,7 +71,7 @@ public class Point {
      * @return distance as double
      */
     public double distance(Point p){
-        return Math.sqrt(this.distanceSquared(p));
+        return Math.sqrt(distanceSquared(p));
     }
 
     @Override
