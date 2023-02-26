@@ -34,19 +34,39 @@ public class Vector extends Point {
         }
     }
 
+    /**
+     * Add two vectors
+     * @param v second vector
+     * @return new Vector which is the sum
+     */
     public Vector add(Vector v) {
         return new Vector(v.point.add(this.point));
     }
 
+    /**
+     * Multiplies vector by a scalar
+     * @param s scalar
+     * @return new scaled vector
+     */
     public Vector scale(double s){
         return new Vector(point.scale(s));
     }
 
+    /**
+     * Calculates dot product between two vectors using algebraic formula
+     * @param v second vector
+     * @return the dot product as a double
+     */
     public double dotProduct(Vector v){
         Double3 prod = this.point.product(v.point);
         return (prod.d1 + prod.d2 + prod.d3);
     }
 
+    /**
+     * Calculates cross product between two vectors using algebraic formula
+     * @param v second vector
+     * @return the norm of the two vectors
+     */
     public Vector crossProduct(Vector v){
         double a1 = this.point.d1;
         double a2 = this.point.d2;
@@ -60,14 +80,26 @@ public class Vector extends Point {
         return new Vector(term1,term2,term3);
     }
 
+    /**
+     * Gets distance squared from origin to endpoint of vector
+     * @return the length of the vector, squared
+     */
     public double lengthSquared(){
         return distanceSquared(new Point(Double3.ZERO));
     }
 
+    /**
+     * Square root of length squared
+     * @return length of the vector
+     */
     public double length(){
         return Math.sqrt(lengthSquared());
     }
 
+    /**
+     * Divides each component of vector by the length of the vector
+     * @return a unit vector in the same direction as the vector
+     */
     public Vector normalize(){
         double length = length();
         double term1 = point.d1/length;
