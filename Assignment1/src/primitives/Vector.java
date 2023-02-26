@@ -15,7 +15,7 @@ public class Vector extends Point {
     Vector(Double3 endpoint){
         super(endpoint);
 
-        if (this.equals(Double3.ZERO)){
+        if (endpoint.equals(Double3.ZERO)){
             throw new IllegalArgumentException("Cannot create a zero vector.");
         }
     }
@@ -29,7 +29,7 @@ public class Vector extends Point {
     public Vector(double num1, double num2, double num3){
         super(num1,num2,num3);
 
-        if (this.equals(Double3.ZERO)){
+        if (getPoint().equals(Double3.ZERO)){
             throw new IllegalArgumentException("Cannot create a zero vector.");
         }
     }
