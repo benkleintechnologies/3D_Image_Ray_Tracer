@@ -36,6 +36,43 @@ public class Point {
         return point;
     }
 
+    /**
+     * Subtract one point from another
+     * @param p second point
+     * @return Vector from second point to this point
+     */
+    public Vector subtract(Point p){
+        return new Vector(this.point.subtract(p.getPoint()));
+    }
+
+    /**
+     * Add a point to this point
+     * @param p second point
+     * @return new Point which is the sum of these two points
+     */
+    public Point add(Point p){
+        return new Point(p.point.add(this.point));
+    }
+
+    /**
+     * Calculates the distance between two points, squared
+     * @param p second point
+     * @return distance squared as double
+     */
+    public double distanceSquared(Point p){
+        Double3 dif = this.point.subtract(p.getPoint());
+        return ((dif.d1*dif.d1) + (dif.d2*dif.d2) + (dif.d3*dif.d3));
+    }
+
+    /**
+     * Calculates the distance between two points
+     * @param p second point
+     * @return distance as double
+     */
+    public double distance(Point p){
+        return Math.sqrt(this.distanceSquared(p));
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
