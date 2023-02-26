@@ -1,7 +1,11 @@
 package primitives;
 
-import java.util.Objects;
-
+/**
+ * Class Ray is the basic class representing a ray starting at a point in Cartesian
+ * 3-Dimensional coordinate system.
+ * @author Eli Hawk and Binyamin Klein
+ * 563385586 & 576708589
+ */
 public class Ray {
     final Point point;
     final Vector direction;
@@ -11,10 +15,18 @@ public class Ray {
         this.direction = direction.normalize();
     }
 
+    /**
+     * Getter for point
+     * @return starting point of ray
+     */
     public Point getPoint() {
         return point;
     }
 
+    /**
+     * Getter for direction
+     * @return direction of ray
+     */
     public Vector getDirection() {
         return direction;
     }
