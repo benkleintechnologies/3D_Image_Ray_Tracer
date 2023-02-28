@@ -1,15 +1,4 @@
 
 .DS_Store
-/out/production/Assignment1/geometries/Cylinder.class
-/out/production/Assignment1/primitives/Double3.class
-/out/production/Assignment1/geometries/Geometry.class
-/out/production/Assignment1/Main.class
-/out/production/Assignment1/geometries/Plane.class
-/out/production/Assignment1/primitives/Point.class
-/out/production/Assignment1/geometries/Polygon.class
-/out/production/Assignment1/primitives/Ray.class
-/out/production/Assignment1/geometries/Sphere.class
-/out/production/Assignment1/geometries/Triangle.class
-/out/production/Assignment1/geometries/Tube.class
-/out/production/Assignment1/primitives/Util.class
-/out/production/Assignment1/primitives/Vector.class
+/Assignment0/
+/out/
