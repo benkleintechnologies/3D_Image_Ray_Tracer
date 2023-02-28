@@ -10,7 +10,7 @@ import primitives.Vector;
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public class Tube implements Geometry{
+public class Tube extends RadialGeometry{
     Ray axisRay;
     double radius;
 
@@ -21,8 +21,8 @@ public class Tube implements Geometry{
      * @param r the radius of the Tube
      */
     public Tube(Ray axis, double r){
+        super(r);
         axisRay = axis;
-        radius = r;
     }
 
     /**

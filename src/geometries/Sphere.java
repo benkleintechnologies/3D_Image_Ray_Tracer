@@ -8,7 +8,7 @@ import primitives.Vector;
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public class Sphere implements Geometry{
+public class Sphere extends RadialGeometry{
     Point center;
     double radius;
 
@@ -19,8 +19,8 @@ public class Sphere implements Geometry{
      * @param r the radius of the circle
      */
     public Sphere(Point p, double r){
+        super(r);
         center = p;
-        radius = r;
     }
 
     /**
