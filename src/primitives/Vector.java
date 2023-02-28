@@ -58,8 +58,14 @@ public class Vector extends Point {
      * @return the dot product as a double
      */
     public double dotProduct(Vector v){
-        Double3 prod = this.point.product(v.point);
-        return (prod.d1 + prod.d2 + prod.d3);
+        //Need to change not to use product of Double3 which creates new object
+        //Double3 prod = this.point.product(v.point);
+        //return (prod.d1 + prod.d2 + prod.d3);
+
+        double term1 = this.point.d1 * v.point.d1;
+        double term2 = this.point.d2 * v.point.d2;
+        double term3 = this.point.d3 * v.point.d3;
+        return term1 + term2 + term3;
     }
 
     /**
@@ -81,11 +87,14 @@ public class Vector extends Point {
     }
 
     /**
-     * Gets distance squared from origin to endpoint of vector
+     * Gets distance squared using formula: v⋅v = |v|^2
      * @return the length of the vector, squared
      */
     public double lengthSquared(){
-        return distanceSquared(new Point(Double3.ZERO));
+        //I think we aren't supposed to do this
+        //return distanceSquared(new Point(Double3.ZERO));
+
+        return this.dotProduct(this);
     }
 
     /**
