@@ -29,7 +29,7 @@ public class Vector extends Point {
     public Vector(double num1, double num2, double num3){
         super(num1,num2,num3);
 
-        if (getPoint().equals(Double3.ZERO)){
+        if (xyz.equals(Double3.ZERO)){
             throw new IllegalArgumentException("Cannot create a zero vector.");
         }
     }
@@ -40,7 +40,7 @@ public class Vector extends Point {
      * @return new Vector which is the sum
      */
     public Vector add(Vector v) {
-        return new Vector(v.point.add(this.point));
+        return new Vector(v.xyz.add(this.xyz));
     }
 
     /**
@@ -49,7 +49,7 @@ public class Vector extends Point {
      * @return new scaled vector
      */
     public Vector scale(double s){
-        return new Vector(point.scale(s));
+        return new Vector(xyz.scale(s));
     }
 
     /**
@@ -62,9 +62,9 @@ public class Vector extends Point {
         //Double3 prod = this.point.product(v.point);
         //return (prod.d1 + prod.d2 + prod.d3);
 
-        double term1 = this.point.d1 * v.point.d1;
-        double term2 = this.point.d2 * v.point.d2;
-        double term3 = this.point.d3 * v.point.d3;
+        double term1 = this.xyz.d1 * v.xyz.d1;
+        double term2 = this.xyz.d2 * v.xyz.d2;
+        double term3 = this.xyz.d3 * v.xyz.d3;
         return term1 + term2 + term3;
     }
 
@@ -74,16 +74,10 @@ public class Vector extends Point {
      * @return the norm of the two vectors
      */
     public Vector crossProduct(Vector v){
-        double a1 = this.point.d1;
-        double a2 = this.point.d2;
-        double a3 = this.point.d3;
-        double b1 = v.point.d1;
-        double b2 = v.point.d2;
-        double b3 = v.point.d3;
-        double term1 = (a2 * b3) - (a3 * b2);
-        double term2 = -((a1 * b3) - (a3 * b1));
-        double term3 = (a1 * b2) - (a2 * b1);
-        return new Vector(term1,term2,term3);
+        return new Vector(
+                (this.xyz.d2 * v.xyz.d3) - (this.xyz.d3 * v.xyz.d2),
+                -((this.xyz.d1 * v.xyz.d3) - (this.xyz.d3 * v.xyz.d1)),
+                (this.xyz.d1 * v.xyz.d2) - (this.xyz.d2 * v.xyz.d1));
     }
 
     /**
@@ -111,9 +105,18 @@ public class Vector extends Point {
      */
     public Vector normalize(){
         double length = length();
-        double term1 = point.d1/length;
-        double term2 = point.d2/length;
-        double term3 = point.d3/length;
+        double term1 = xyz.d1/length;
+        double term2 = xyz.d2/length;
+        double term3 = xyz.d3/length;
         return new Vector(term1,term2,term3);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Vector)) return false;
+        Vector other = (Vector) obj;
+        return this.xyz.equals(other.xyz);
     }
 }
