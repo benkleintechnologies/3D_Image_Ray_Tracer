@@ -8,14 +8,14 @@ package primitives;
  */
 public class Point {
     /** Point of type Double3 */
-    final Double3 point;
+    final Double3 xyz;
 
     /**
      * Constructor to initialize Point based on Double3
-     * @param point in 3-dimensional space
+     * @param xyz in 3-dimensional space
      */
-    public Point(Double3 point) {
-        this.point = point;
+    public Point(Double3 xyz) {
+        this.xyz = xyz;
     }
 
     /**
@@ -25,15 +25,7 @@ public class Point {
      * @param num3 third point
      */
     public Point(double num1, double num2, double num3){
-        this.point = new Double3(num1, num2, num3);
-    }
-
-    /**
-     * Getter for point variable
-     * @return point
-     */
-    public Double3 getPoint() {
-        return point;
+        this.xyz = new Double3(num1, num2, num3);
     }
 
     /**
@@ -42,7 +34,7 @@ public class Point {
      * @return Vector from second point to this point
      */
     public Vector subtract(Point p){
-        return new Vector(point.subtract(p.getPoint()));
+        return new Vector(xyz.subtract(p.xyz));
     }
 
     /**
@@ -51,7 +43,7 @@ public class Point {
      * @return new Point which is the sum of these two points
      */
     public Point add(Point p){
-        return new Point(p.point.add(this.point));
+        return new Point(p.xyz.add(this.xyz));
     }
 
     /**
@@ -60,7 +52,7 @@ public class Point {
      * @return distance squared as double
      */
     public double distanceSquared(Point p){
-        Double3 dif = point.subtract(p.getPoint());
+        Double3 dif = xyz.subtract(p.xyz);
         Double3 prod = dif.product(dif);
         return (prod.d1 + prod.d2 + prod.d3);
     }
@@ -80,11 +72,11 @@ public class Point {
         if (obj == null) return false;
         if (!(obj instanceof Point)) return false;
         Point other = (Point) obj;
-        return this.point.equals(other.point);
+        return this.xyz.equals(other.xyz);
     }
 
     @Override
     public String toString() {
-        return point.toString();
+        return xyz.toString();
     }
 }
