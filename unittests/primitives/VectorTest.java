@@ -1,12 +1,11 @@
 package primitives;
 
-import geometries.Polygon;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Class Plane is the basic class of Geometry representing a plane in Cartesian 3-Dimensional coordinate system.
+ * Unit tests for primitives.Vector class
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
