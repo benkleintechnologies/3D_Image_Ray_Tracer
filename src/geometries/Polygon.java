@@ -63,6 +63,7 @@ public class Polygon implements Geometry {
       // with
       // the normal. If all the rest consequent edges will generate the same sign -
       // the
+      // all angles of the polygon must be between 90 - 180 degrees
       // polygon is convex ("kamur" in Hebrew).
       boolean positive = edge1.crossProduct(edge2).dotProduct(n) > 0;
       for (var i = 1; i < vertices.length; ++i) {
