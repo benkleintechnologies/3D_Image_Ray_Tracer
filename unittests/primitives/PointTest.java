@@ -11,12 +11,12 @@ class PointTest {
 
     /** Test method for {@link primitives.Point#Point(Double3)}. */
     @Test
-    public void testConstructorDouble3() {
+    void testConstructorDouble3() {
     }
 
     /** Test method for {@link primitives.Point#Point(double, double, double)}. */
     @Test
-    public void testConstructorThreeDoubles() {
+    void testConstructorThreeDoubles() {
     }
 
     /**
