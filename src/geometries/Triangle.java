@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Vector;
 
 /**
  * Class Triangle is the class representing a triangle (as a type of Polygon) in Cartesian 3-Dimensional coordinate system.
@@ -24,5 +25,10 @@ public class Triangle extends Polygon{
     @Override
     public String toString() {
         return "Triangle: {" + vertices.get(0) + "," + vertices.get(1) + "," + vertices.get(2) + "}";
+    }
+
+    @Override
+    public Vector getNormal(Point p) {
+        return null;
     }
 }

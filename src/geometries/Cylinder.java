@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.Ray;
+import primitives.Vector;
 
 /**
  * Class Cylinder is the class representing a cylinder (as a type of Tube) in Cartesian 3-Dimensional coordinate system.
@@ -27,6 +28,14 @@ public class Cylinder extends Tube{
      */
     public double getHeight() {
         return height;
+    }
+
+    /**
+     * Getter for normal to the plane
+     * @return normal
+     */
+    public Vector getNormal() {
+        return null;
     }
 
     @Override
