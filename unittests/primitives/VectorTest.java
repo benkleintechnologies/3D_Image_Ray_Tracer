@@ -235,6 +235,31 @@ class VectorTest {
         assertEquals(new Vector(0.57735026919, 0.57735026919, 0.57735026919), v.normalize(), "Error: normalizing a vector with length less than 1");
         // =============== Boundary Values Tests ==================
         // Don't think we need any boundary cases here, we'll check
+    }
+
+    /**
+     * Test method for {@link Vector#equals()}.
+     */
+    @Test
+    void equals(){
+        Vector v1 = new Vector(1,2,3);
+        Vector v2 = new Vector(3,2,1);
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Test equivalence with a vector and itself
+        assertTrue(v1.equals(v1), "Error checking equality of a vector with itself.");
+
+        // TC02: Test equivalence of 2 different but equal vectors
+        assertTrue(v1.equals(new Vector (1,2,3)), "Error checking equality of a vector with itself.");
+
+        // TC03: Test equivalence of 2 different unequal vectors
+        assertFalse(v1.equals(v2),"Error checking equality of unequal vectors.");
+
+        // =============== Boundary Values Tests ==================
+        // TC04: Test equivalence of a vector with null
+        assertFalse(v1.equals(null),"Error checking equality of unequal vectors.");
+        // TC05: Test equivalence of a vector with a different type of object
+        assertFalse(v1.equals(new Point(1,2,3) ),"Error checking equality of unequal vectors.");
+
 
 
     }
