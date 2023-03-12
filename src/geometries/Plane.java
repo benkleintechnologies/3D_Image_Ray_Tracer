@@ -20,10 +20,10 @@ public class Plane implements Geometry{
      * @param p3 Third point
      */
     public Plane(Point p1, Point p2, Point p3){
-        //Vector v1 = p1.subtract(p2);
-        //Vector v2 = p1.subtract(p3);
+        Vector v1 = p1.subtract(p2);
+        Vector v2 = p1.subtract(p3);
         //Calculate Normal Vector
-        normal = null; //v1.crossProduct(v2).normalize();
+        normal = v1.crossProduct(v2).normalize();
         q0 = p1;
     }
 
@@ -60,6 +60,6 @@ public class Plane implements Geometry{
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        return normal;
     }
 }

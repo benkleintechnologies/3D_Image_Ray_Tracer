@@ -27,8 +27,5 @@ public class Triangle extends Polygon{
         return "Triangle: {" + vertices.get(0) + "," + vertices.get(1) + "," + vertices.get(2) + "}";
     }
 
-    @Override
-    public Vector getNormal(Point p) {
-        return null;
-    }
+    //getNormal is inherited from Polygon
 }

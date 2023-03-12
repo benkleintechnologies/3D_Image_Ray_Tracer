@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
@@ -30,11 +31,14 @@ public class Cylinder extends Tube{
         return height;
     }
 
-    /**
-     * Getter for normal to the plane
-     * @return normal
-     */
-    public Vector getNormal() {
+    @Override
+    public Vector getNormal(Point p) {
+        //check if point is on base or side
+        //
+        // Need to implement
+        //
+        //
+
         return null;
     }
 

@@ -12,7 +12,7 @@ import primitives.Vector;
  */
 public class Tube extends RadialGeometry{
     Ray axisRay;
-    double radius;
+    //double radius;
 
     /**
      * Constructor for the Tube class, constructing a tube with a
@@ -48,6 +48,16 @@ public class Tube extends RadialGeometry{
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        //Find point on axis ray closest to P. We'll call it O
+        double t = axisRay.getDirection().dotProduct(p.subtract(axisRay.getPoint()));
+        Point O;
+        //If point is 90 degrees from ray head, the closest point is the ray head
+        if (t>0){
+            O = axisRay.getPoint().add(axisRay.getDirection().scale(t));
+        }else{
+            O = axisRay.getPoint();
+        }
+        //Normal is vector from O to p, normalized
+        return p.subtract(O).normalize();
     }
 }
