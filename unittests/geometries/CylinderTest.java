@@ -23,7 +23,7 @@ class CylinderTest {
     void testToString() {
     }
 
-    /** Test method for {@link Cylinder#getNormal()}. */
+    /** Test method for {@link Cylinder#getNormal(Point)}. */
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
@@ -69,7 +69,7 @@ class CylinderTest {
         // Check that vector returned is normal to top of the tube (because normal dotted with two vectors representing circle on top are zero)
         assertTrue(isZero(result.dotProduct(new Vector(0,-1,0))) && isZero(result.dotProduct(new Vector(-1,0,0))), "Result is not the normal to the Cylinder at the point on its top");
 
-        // TC05: Check normal at center of top of cylinder
+        // TC05: Check normal at center of bottom of cylinder
         // ensure there are no exceptions
         assertDoesNotThrow(() -> cyl.getNormal(new Point(0, 1, 0)), "");
         // generate the test result

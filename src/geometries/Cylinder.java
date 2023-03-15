@@ -33,13 +33,19 @@ public class Cylinder extends Tube{
 
     @Override
     public Vector getNormal(Point p) {
-        //check if point is on base or side
-        //
-        // Need to implement
-        //
-        //
+        //Check if point is head of axisRay
+        if (p.equals(axisRay.getPoint()))
+            return axisRay.getDirection();
 
-        return null;
+        //check if point is on base or side
+        double t = axisRay.getDirection().dotProduct(p.subtract(axisRay.getPoint()));
+        Point O;
+        if (t > 0 && t < height) { // point is on the side of the cylinder
+            O = axisRay.getPoint().add(axisRay.getDirection().scale(t));
+            return p.subtract(O).normalize();
+        }
+        // point is on the top or bottom of the cylinder
+        return axisRay.getDirection();
     }
 
     @Override
