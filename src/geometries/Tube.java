@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 /**
  * Class Sphere is the basic class representing a Tube in the Cartesian
  * 3-Dimensional coordinate system.
@@ -59,5 +61,10 @@ public class Tube extends RadialGeometry{
         }
         //Normal is vector from O to p, normalized
         return p.subtract(O).normalize();
+    }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
 }
