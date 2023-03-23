@@ -34,7 +34,7 @@ class testSphereTest {
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Check that normal
-        Sphere sph = new Sphere(new Point(0,0,0), 5);
+        Sphere sph = new Sphere(5, new Point(0,0,0));
         // ensure there are no exceptions
         assertDoesNotThrow(() -> sph.getNormal(new Point(0, 0, 5)), "");
         // generate the test result
@@ -47,8 +47,7 @@ class testSphereTest {
 
     @Test
     public void testFindIntersections() {
-        //Point 1d = new Point(1,1,1);
-        Sphere sphere = new Sphere( new Point (1, 0, 0), 1d);
+        Sphere sphere = new Sphere(1d,  new Point (1, 0, 0));
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray's line is outside the sphere (0 points)
         assertNull(sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(1, 1, 0))),
