@@ -54,9 +54,4 @@ public class Cylinder extends Tube{
     public String toString() {
         return "Cylinder: " + "axis ray = " + axisRay + ", radius = " + radius + ", height = " + height;
     }
-
-    @Override
-    public List<Point> findIntsersections(Ray ray) {
-        return null;
-    }
 }
