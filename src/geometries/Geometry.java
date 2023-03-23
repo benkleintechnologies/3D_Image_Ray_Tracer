@@ -4,11 +4,11 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * Geometry Interface
+ * Geometry Interface which extends Intersectable
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public interface Geometry {
+public interface Geometry extends Intersectable {
 
     /**
      * Get the normal to the geometry at a point
