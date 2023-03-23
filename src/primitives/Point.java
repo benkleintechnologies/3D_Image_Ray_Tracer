@@ -66,6 +66,30 @@ public class Point {
         return Math.sqrt(distanceSquared(p));
     }
 
+    /**
+     * Getter for x-coordinate
+     * @return the x-coordinate of the point
+     */
+    public double getX(){
+        return xyz.d1;
+    }
+
+    /**
+     * Getter for y-coordinate
+     * @return the y-coordinate of the point
+     */
+    public double getY(){
+        return xyz.d2;
+    }
+
+    /**
+     * Getter for z-coordinate
+     * @return the z-coordinate of the point
+     */
+    public double getZ(){
+        return xyz.d3;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
