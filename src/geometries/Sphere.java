@@ -1,7 +1,11 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
+
 /**
  * Class Sphere is the basic class representing a sphere in the Cartesian
  * 3-Dimensional coordinate system.
@@ -48,5 +52,10 @@ public class Sphere extends RadialGeometry{
     public Vector getNormal(Point p) {
         // Normal is vector from center to p, normalized
         return p.subtract(center).normalize();
+    }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
 }
