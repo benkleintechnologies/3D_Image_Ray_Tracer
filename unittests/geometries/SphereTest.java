@@ -1,10 +1,7 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
-import primitives.Point;
-import primitives.Vector;
-import primitives.Ray;
-
+import primitives.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,12 +16,12 @@ class testSphereTest {
 
     /** Test method for {@link Sphere#getRadius()} . */
     @Test
-    void testgetRadius() {
+    void testGetRadius() {
     }
 
     /** Test method for {@link Sphere#getCenter()} . */
     @Test
-    void testgetCenter() {
+    void testGetCenter() {
     }
 
     /** Test method for {@link Sphere#toString()} . */
@@ -34,7 +31,7 @@ class testSphereTest {
 
     /** Test method for {@link Sphere#getNormal(Point)} . */
     @Test
-    void testgetNormal() {
+    void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Check that normal
         Sphere sph = new Sphere(new Point(0,0,0), 5);
@@ -50,8 +47,8 @@ class testSphereTest {
 
     @Test
     public void testFindIntersections() {
-        Point 1d = new Point(1,1,1);
-        Sphere sphere = new Sphere(1d, new Point (1, 0, 0));
+        //Point 1d = new Point(1,1,1);
+        Sphere sphere = new Sphere( new Point (1, 0, 0), 1d);
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray's line is outside the sphere (0 points)
         assertNull(sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(1, 1, 0))),
