@@ -22,7 +22,7 @@ public class Sphere extends RadialGeometry{
      * @param p the center of the circle
      * @param r the radius of the circle
      */
-    public Sphere(Point p, double r){
+    public Sphere(double r, Point p){
         super(r);
         center = p;
     }
