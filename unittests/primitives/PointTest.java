@@ -16,7 +16,7 @@ class PointTest {
      * Test method for {@link primitives.Point#subtract(primitives.Point)}.
      */
     @Test
-    void subtract() {
+    void testSubtract() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(3,4,6);
@@ -54,7 +54,7 @@ class PointTest {
      * Test method for {@link primitives.Point#add(primitives.Point)}.
      */
     @Test
-    void add() {
+    void testAdd() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(3,4,6);
@@ -82,7 +82,7 @@ class PointTest {
      * Test method for {@link primitives.Point#add(primitives.Point)}.
      */
     @Test
-    void distanceSquared() {
+    void testDistanceSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(1,2,6);
@@ -115,7 +115,7 @@ class PointTest {
      * Test method for {@link primitives.Point#distance(primitives.Point)}.
      */
     @Test
-    void distance() {
+    void testDistance() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(1,2,6);

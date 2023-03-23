@@ -16,12 +16,12 @@ class TubeTest {
 
     /** Test method for {@link Tube#getRadius()} . */
     @Test
-    void getRadius() {
+    void testGetRadius() {
     }
 
     /** Test method for {@link Tube#getAxisRay()} . */
     @Test
-    void getAxisRay() {
+    void testGetAxisRay() {
     }
 
     /** Test method for {@link Tube#toString()} . */
@@ -31,7 +31,7 @@ class TubeTest {
     
     /** Test method for {@link Tube#getNormal(Point)} . */
     @Test
-    void getNormal() {
+    void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Check normal at random point
         Tube t1 = new Tube(new Ray(new Point(0,0,0), new Vector(0,0,1)), 5);

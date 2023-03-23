@@ -15,7 +15,7 @@ class CylinderTest {
 
     /** Test method for {@link Cylinder#getHeight()}. */
     @Test
-    void getHeight() {
+    void testGetHeight() {
     }
 
     /** Test method for {@link Cylinder#toString()}. */

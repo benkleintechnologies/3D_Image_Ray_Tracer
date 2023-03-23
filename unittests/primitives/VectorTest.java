@@ -1,5 +1,4 @@
 package primitives;
-import geometries.Polygon;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,10 +32,10 @@ class VectorTest {
 
  // ============ Equivalence Partitions Tests ==============
 
-        // TC01: Add 2 vectors with an accute angle between them
+        // TC01: Add 2 vectors with an acute angle between them
         Vector va = new Vector(1,1,1);
-        Vector vb = new Vector(1/2, 1, 1);
-        assertEquals(new Vector(3/2,2,2), va.add(vb), "Error: adding to vectors with an accute angle");
+        Vector vb = new Vector(1d/2, 1, 1);
+        assertEquals(new Vector(3d/2,2,2), va.add(vb), "Error: adding to vectors with an accute angle");
 
         // TC02: Add 2 vectors with an obtuse angle between them
         va = new Vector(1,1,1);
@@ -68,7 +67,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#scale(double)}.
      */
     @Test
-    void scale() {
+    void testScale() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Scale a vector of all positive values with a positive scalar
         Vector v1 = new Vector(1, 1, 1);
@@ -102,7 +101,6 @@ class VectorTest {
         assertEquals(new Vector(.1, .1, .1), v1.scale(scalar), "Error: scaling vector by .1");
         // TC07: scale a vector by -.1
         v1 = new Vector(1, 1, 1);
-        scalar = .1;
         assertEquals(new Vector(.1, .1, .1), v1.scale(scalar), "Error: scaling vector by -.1");
     }
 
@@ -110,7 +108,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
      */
     @Test
-    void dotProduct() {
+    void testDotProduct() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Dot product of 2 vectors that form an accute angle between them
         Vector v1 = new Vector(1, 1, 1);
@@ -157,12 +155,12 @@ class VectorTest {
         assertEquals( v1.length() * v2.length(), vr.length(), 0.00001, "crossProduct() wrong result length");
 
         // TC02: Test cross-product result orthogonality to its operands
-        assertTrue(0 == vr.dotProduct(v1), "crossProduct() result is not orthogonal to 1st operand");
-        assertTrue(0 == vr.dotProduct(v2), "crossProduct() result is not orthogonal to 2nd operand");
+        assertEquals(0, vr.dotProduct(v1), "crossProduct() result is not orthogonal to 1st operand");
+        assertEquals(0, vr.dotProduct(v2), "crossProduct() result is not orthogonal to 2nd operand");
         // TC03: Test cross-product of non-orthoginal vectors
         v1 = new Vector(1,1,1);
         v2 = new Vector(1,2,1);
-        assertTrue((new Vector(-1, 0, 1).equals(v1.crossProduct(v2))),"crossProduct() result is incorrect");
+        assertEquals(new Vector(-1, 0, 1), v1.crossProduct(v2), "crossProduct() result is incorrect");
 
         // =============== Boundary Values Tests ==================
         // TC04: test zero vector from cross-product of co-lined vectors
@@ -187,7 +185,7 @@ class VectorTest {
      * Test method for {@link Vector#lengthSquared()}.
      */
     @Test
-    void lengthSquared() {
+    void testLengthSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: getting length squared of a vector with all positive values
         Vector v = new Vector(1, 1, 1);
@@ -204,7 +202,7 @@ class VectorTest {
      * Test method for {@link Vector#length()}.
      */
     @Test
-    void length() {
+    void testLength() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: getting length of a vector with all positive values
         Vector v = new Vector(1, 1, 1);
@@ -220,7 +218,7 @@ class VectorTest {
      * Test method for {@link Vector#normalize()}.
      */
     @Test
-    void normalize() {
+    void testNormalize() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Normalize a vector with all positive values
         Vector v = new Vector(1,1,1);
@@ -238,10 +236,10 @@ class VectorTest {
     }
 
     /**
-     * Test method for {@link Vector#equals()}.
+     * Test method for {@link Vector#equals(Object)}.
      */
     @Test
-    void equals(){
+    void testEquals(){
         Vector v1 = new Vector(1,2,3);
         Vector v2 = new Vector(3,2,1);
         // ============ Equivalence Partitions Tests ==============
