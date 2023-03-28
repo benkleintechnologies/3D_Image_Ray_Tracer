@@ -10,7 +10,9 @@ import static primitives.Util.isZero;
 import org.junit.jupiter.api.Test;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import java.util.List;
 
 /** Testing Polygons
  * @author Dan */
@@ -82,5 +84,22 @@ public class PolygonTests {
         for (int i = 0; i < 3; ++i)
             assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
                     "Polygon's normal is not orthogonal to one of the edges");
+    }
+
+    /** Test method for {@link geometries.Polygon#findIntersections(Ray)}.  */
+    @Test
+    public void testFindIntersections() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Intersection inside Polygon
+        // TC02: Intersection outside Polygon on one edge
+        // TC03: Intersection outside Polygon on two edges
+        // TC04: Ray parallel to Polygon
+        // TC05: Ray starts after Polygon
+
+        // ============= Boundary Values Tests ==================
+        // TC10: Ray intersects Polygon edge
+        // TC11: Ray intersects Polygon corner
+        // TC12: Ray starts on Polygon edge
+        // TC13: Ray starts on Polygon corner
     }
 }
