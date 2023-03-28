@@ -44,6 +44,7 @@ class SphereTest {
         assertEquals(new Point(0,0,1), result, "Result is not the normal to the sphere at the point");
     }
 
+    /** Test method for {@link Sphere#getNormal(Point)} . */
     @Test
     public void testFindIntersections() {
         Sphere sphere = new Sphere(1d,  new Point (1, 0, 0));
