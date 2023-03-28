@@ -3,6 +3,7 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.Double3;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,7 @@ class PlaneTest {
 
     /** Test method for {@link Plane#getQ0()}. */
     @Test
-    void getQ0() {
+    void testGetQ0() {
     }
 
     /** Test method for {@link Plane#getNormal()}. */
@@ -39,5 +40,25 @@ class PlaneTest {
     /** Test method for {@link Plane#toString()} )}. */
     @Test
     void testToString() {
+    }
+
+    /** Test method for {@link Plane#findIntersections(Ray)} ()} )}. */
+    void testFindIntersections(){
+
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Ray intersects the plane
+        // TC02: Ray does not intersect the plane
+
+
+        // =============== Boundary Values Tests ==================
+        // TC11: Ray is parallel to the plane and in the plane
+        // TC12: Ray is parallel to the plane and not in the plane
+        // TC13: Ray is orthoginal to the plane, starting before the plane
+        // TC14: Ray is orthoginal to the plane, starting in the plane
+        // TC15: Ray is orthoginal to the plane, starting after the plane
+        // TC16: Ray begins at plane and is neither orthofianl or parallel to the plane
+        // TC17: Ray begins at point Q,the reference point of the plane, and not parallel or orthoginal
+
+
     }
 }
