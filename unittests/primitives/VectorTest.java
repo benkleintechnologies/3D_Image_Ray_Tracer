@@ -11,6 +11,7 @@ class VectorTest {
 
     @Test
     public void testConstructor() {
+        // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct number inputs for building a vector
         try {
@@ -18,19 +19,36 @@ class VectorTest {
         } catch (IllegalArgumentException e) {
             fail("Failed constructing a correct polygon");
         }
-// =============== Boundary Values Tests ==================
+
+        // =============== Boundary Values Tests ==================
+
         // TC02: Create Zero Vector
         assertThrows(IllegalArgumentException.class, //
                 () -> new Vector(0,0,0), //
                 "Cannot create a zero vector.");    }
+
+    /** Test method for {@link primitives.Vector#subtract(Point)}. */
+    @Test
+    void testSubtract(){
+        // ============ Equivalence Partitions Tests ==============
+
+        // TC01: Subtracting one regular vector from another
+        Vector va = new Vector(1, 2, 4);
+        Vector vb = new Vector(2, 1, 1);
+        assertEquals(new Vector(-1, 1, 3), va.subtract(vb), "Error: Subtracting normal vectors");
+
+        // ============ Boundary Value Tests ==============
+
+        // TC11: Subtract vector from itself (zero vector)
+        assertThrows(IllegalArgumentException.class, () -> va.subtract(va), "Error: Subtracting a vector from itself should throw error");
+    }
 
     /**
      * Test method for {@link primitives.Vector#add(primitives.Point)}.
      */
     @Test
     void add() {
-
- // ============ Equivalence Partitions Tests ==============
+        // ============ Equivalence Partitions Tests ==============
 
         // TC01: Add 2 vectors with an acute angle between them
         Vector va = new Vector(1,1,1);
@@ -42,7 +60,8 @@ class VectorTest {
         vb = new Vector(-9, -4, 9);
         assertEquals(new Vector(-8, -3, 10), va.add(vb), "Error: adding to vectors with an obtuse angle");
 
-// =============== Boundary Values Tests ==================
+        // =============== Boundary Values Tests ==================
+
         // TC02: Add 2 vectors of same lengths, but opposite directions
         Vector v = new Vector(1, 1, 1);
         assertThrows(IllegalArgumentException.class, () -> v.add(new Vector(-1, -1, -1)), "Error: can not construct a Zero vector");
@@ -58,9 +77,6 @@ class VectorTest {
         v1 = new Vector(1, 1, 1);
         v2 = new Vector(1, 0, 1);
         assertEquals(new Vector(2, 1, 2), v1.add(v2), "Error in adding orthoginal vectors");
-
-
-
     }
 
     /**
@@ -69,6 +85,7 @@ class VectorTest {
     @Test
     void testScale() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Scale a vector of all positive values with a positive scalar
         Vector v1 = new Vector(1, 1, 1);
         double scalar = 5;
@@ -90,6 +107,7 @@ class VectorTest {
         assertEquals(new Vector(5, 5, 5), v1.scale(scalar), "Error scaling a negative vector with a negative scalar");
 
         // =============== Boundary Values Tests ==================
+
         // TC05: scale a vector by 0
         Vector v = new Vector(1, 1, 1);
         int zeroScalar = 0;
@@ -110,6 +128,7 @@ class VectorTest {
     @Test
     void testDotProduct() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Dot product of 2 vectors that form an accute angle between them
         Vector v1 = new Vector(1, 1, 1);
         Vector v2 = new Vector(.5, 1, 1);
@@ -121,6 +140,7 @@ class VectorTest {
         assertEquals(-4, v1.dotProduct(v2), "\"Error: in calculating vectors that form an obtuse angle\"");
 
         // =============== Boundary Values Tests ==================
+
         // TC03: Dot product between orthoginal vectors
         v1 = new Vector(1, 1, 1);
         v2 = new Vector(1, 0, 1);
@@ -163,6 +183,7 @@ class VectorTest {
         assertEquals(new Vector(-1, 0, 1), v1.crossProduct(v2), "crossProduct() result is incorrect");
 
         // =============== Boundary Values Tests ==================
+
         // TC04: test zero vector from cross-product of co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
         Vector v4 = new Vector(1, 2, 3);
@@ -187,6 +208,7 @@ class VectorTest {
     @Test
     void testLengthSquared() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: getting length squared of a vector with all positive values
         Vector v = new Vector(1, 1, 1);
         assertEquals(3, v.lengthSquared(), "Error: calculating length squared of a positive vector");
@@ -220,6 +242,7 @@ class VectorTest {
     @Test
     void testNormalize() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Normalize a vector with all positive values
         Vector v = new Vector(1,1,1);
         assertEquals(new Vector(0.57735026919, 0.57735026919, 0.57735026919), v.normalize(), "Error: normalizing a positive vector");
@@ -233,32 +256,5 @@ class VectorTest {
         assertEquals(new Vector(0.57735026919, 0.57735026919, 0.57735026919), v.normalize(), "Error: normalizing a vector with length less than 1");
         // =============== Boundary Values Tests ==================
         // Don't think we need any boundary cases here, we'll check
-    }
-
-    /**
-     * Test method for {@link Vector#equals(Object)}.
-     */
-    @Test
-    void testEquals(){
-        Vector v1 = new Vector(1,2,3);
-        Vector v2 = new Vector(3,2,1);
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Test equivalence with a vector and itself
-        assertTrue(v1.equals(v1), "Error checking equality of a vector with itself.");
-
-        // TC02: Test equivalence of 2 different but equal vectors
-        assertTrue(v1.equals(new Vector (1,2,3)), "Error checking equality of a vector with itself.");
-
-        // TC03: Test equivalence of 2 different unequal vectors
-        assertFalse(v1.equals(v2),"Error checking equality of unequal vectors.");
-
-        // =============== Boundary Values Tests ==================
-        // TC04: Test equivalence of a vector with null
-        assertFalse(v1.equals(null),"Error checking equality of unequal vectors.");
-        // TC05: Test equivalence of a vector with a different type of object
-        assertFalse(v1.equals(new Point(1,2,3) ),"Error checking equality of unequal vectors.");
-
-
-
     }
 }

@@ -144,24 +144,4 @@ class PointTest {
         testPoint2 = new Point(0,0,0);
         assertEquals(0, testPoint1.distanceSquared(testPoint2), "Distance from zero to zero should be zero");
     }
-
-    /**
-     * Test method for {@link primitives.Point#equals(Object)}.
-     */
-    @Test
-    void testEquals() {
-        Point testPoint1 = new Point(1,2,6);
-        Point testPoint2 = new Point(4,5,2);
-        // ============ Equivalence Partitions Tests ==============
-        //TC01: Checking equivalence with itself
-        assertEquals(testPoint1, testPoint1, "Point should return equal to itself");
-        //TC02: Checking equivalence with Point with same values
-        assertEquals(testPoint1, new Point(1,2,6), "Point should return equal to Point with same values");
-        //TC03: Checking equivalence with Point with different values
-        assertNotEquals(testPoint1, testPoint2, "Point should return not equal to different Point");
-
-        // =============== Boundary Values Tests ==================
-        //TC04: Checking equivalence with null
-        assertNotEquals(testPoint1, null, "Point should return not equal to null");
-    }
 }

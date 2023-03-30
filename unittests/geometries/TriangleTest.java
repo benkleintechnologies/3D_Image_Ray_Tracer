@@ -72,6 +72,6 @@ class TriangleTest {
         ray = new Ray(new Point(-1,2,-1), new Vector(0,0,1));
         result = t.findIntersections(ray);
         assertNull(result, "Ray hits extension of side of triangle");
-}
+    }
 
 }

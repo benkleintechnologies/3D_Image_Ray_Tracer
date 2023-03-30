@@ -4,8 +4,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.List;
-
 /**
  * Class Cylinder is the class representing a cylinder (as a type of Tube) in Cartesian 3-Dimensional coordinate system.
  * @author Eli Hawk and Binyamin Klein
@@ -41,10 +39,8 @@ public class Cylinder extends Tube{
 
         //check if point is on base or side
         double t = axisRay.getDirection().dotProduct(p.subtract(axisRay.getPoint()));
-        Point O;
         if (t > 0 && t < height) { // point is on the side of the cylinder
-            O = axisRay.getPoint().add(axisRay.getDirection().scale(t));
-            return p.subtract(O).normalize();
+            return super.getNormal(p);
         }
         // point is on the top or bottom of the cylinder
         return axisRay.getDirection();
