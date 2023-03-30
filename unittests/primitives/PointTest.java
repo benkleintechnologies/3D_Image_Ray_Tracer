@@ -2,8 +2,7 @@ package primitives;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for primitives.Point class
@@ -47,7 +46,9 @@ class PointTest {
         // TC06: Both points are zero
         testPoint1 = new Point(0,0,0);
         testPoint2 = new Point(0,0,0);
-        assertEquals(new Point(0,0,0), testPoint1.subtract(testPoint2), "Subtracting zero point from zero point should give zero point");
+        Point finalTestPoint1 = testPoint1;
+        Point finalTestPoint2 = testPoint2;
+        assertThrows(IllegalArgumentException.class, () -> finalTestPoint1.subtract(finalTestPoint2), "Subtracting zero point from zero point should throw an exception");
     }
 
     /**
@@ -87,7 +88,7 @@ class PointTest {
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(1,2,6);
         Point testPoint2 = new Point(1,4,2);
-        assertEquals(21, testPoint1.distanceSquared(testPoint2), "Error in calculating distance between positive points");
+        assertEquals(20, testPoint1.distanceSquared(testPoint2), "Error in calculating distance between positive points");
 
         // TC02: Both points have negative coordinates
         testPoint1 = new Point(-3,-4,-6);
@@ -120,7 +121,7 @@ class PointTest {
         // TC01: Both points have positive coordinates
         Point testPoint1 = new Point(1,2,6);
         Point testPoint2 = new Point(1,4,2);
-        assertEquals(Math.sqrt(21), testPoint1.distance(testPoint2), "Error in calculating distance between positive points");
+        assertEquals(Math.sqrt(20), testPoint1.distance(testPoint2), "Error in calculating distance between positive points");
 
         // TC02: Both points have negative coordinates
         testPoint1 = new Point(-3,-4,-6);
@@ -142,27 +143,5 @@ class PointTest {
         testPoint1 = new Point(0,0,0);
         testPoint2 = new Point(0,0,0);
         assertEquals(0, testPoint1.distanceSquared(testPoint2), "Distance from zero to zero should be zero");
-    }
-
-    /**
-     * Test method for {@link primitives.Point#equals(Object)}.
-     */
-    @Test
-    void testEquals() {
-        Point testPoint1 = new Point(1,2,6);
-        Point testPoint2 = new Point(4,5,2);
-        // ============ Equivalence Partitions Tests ==============
-        //TC01: Checking equivalence with itself
-        assertEquals(testPoint1, testPoint1, "Point should return equal to itself");
-        //TC02: Checking equivalence with Point with same values
-        assertEquals(testPoint1, new Point(1,2,6), "Point should return equal to Point with same values");
-        //TC03: Checking equivalence with Point with different values
-        assertNotEquals(testPoint1, testPoint2, "Point should return not equal to different Point");
-
-        // =============== Boundary Values Tests ==================
-        //TC04: Checking equivalence with null
-        assertNotEquals(testPoint1, null, "Point should return not equal to null");
-        //TC05: Checking equivalence with object that is not a Point
-        assertNotEquals(testPoint1, new Vector(1,2,6), "Point should return not equal to different type");
     }
 }

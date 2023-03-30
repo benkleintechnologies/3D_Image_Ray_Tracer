@@ -13,21 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class SphereTest {
 
-    /** Test method for {@link Sphere#getRadius()} . */
-    @Test
-    void testGetRadius() {
-    }
-
-    /** Test method for {@link Sphere#getCenter()} . */
-    @Test
-    void testGetCenter() {
-    }
-
-    /** Test method for {@link Sphere#toString()} . */
-    @Test
-    void testToString() {
-    }
-
     /** Test method for {@link Sphere#getNormal(Point)} . */
     @Test
     void testGetNormal() {

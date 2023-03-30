@@ -13,16 +13,6 @@ import static primitives.Util.isZero;
  */
 class CylinderTest {
 
-    /** Test method for {@link Cylinder#getHeight()}. */
-    @Test
-    void testGetHeight() {
-    }
-
-    /** Test method for {@link Cylinder#toString()}. */
-    @Test
-    void testToString() {
-    }
-
     /** Test method for {@link Cylinder#getNormal(Point)}. */
     @Test
     void testGetNormal() {

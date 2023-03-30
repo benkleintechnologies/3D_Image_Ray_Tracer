@@ -17,9 +17,17 @@ import static primitives.Util.isZero;
  */
 class PlaneTest {
 
-    /** Test method for {@link Plane#getQ0()}. */
+    /** Test method for {@link Plane#Plane(Point p1, Point p2, Point p3)}. */
     @Test
-    void getQ0() {
+    void testPlaneConstructor() {
+        // ============ Boundary Value Tests ==============
+        // TC11: Ensures first two points are not equal
+        assertThrows(IllegalArgumentException.class, ()-> new Plane(new Point(0,0,1), new Point(0,0,1), new Point(1,0,0)));
+        //TC12: Ensures all points are not on same line
+        Point[] points = {new Point(1, 0 ,0), new Point(2, 0, 0), new Point(3, 0, 0)};
+        Vector v1 = points[1].subtract(points[0]);
+        Vector v2 = points[2].subtract(points[1]);
+        assertThrows(IllegalArgumentException.class, ()->v1.crossProduct(v2), "Should throw error when points on same line" );
     }
 
     /** Test method for {@link Plane#getNormal()}. */
@@ -36,11 +44,6 @@ class PlaneTest {
         assertEquals(1, result.length(), 0.00000001, "Plane's normal is not a unit vector");
         // Check that vector returned for normal is perpendicular to two vectors representing the plane
         assertTrue(isZero(result.dotProduct(new Vector(-1,0,1))) && isZero(result.dotProduct(new Vector(0,-1,1))), "Result is not the normal to the triangle");
-    }
-
-    /** Test method for {@link Plane#toString()} )}. */
-    @Test
-    void testToString() {
     }
 
     /** Test method for {@link Plane#findIntersections(Ray)}. */
