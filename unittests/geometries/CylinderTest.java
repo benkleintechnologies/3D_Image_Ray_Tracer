@@ -85,6 +85,10 @@ class CylinderTest {
         // TC06: Goes through bottom and top
         // **** Group: Goes through top
         // TC07: Goes through top and side
+        // **** Continues along surface
+        // TC08: Starts in the bottom and continues along plane
+        // TC09: Starts in the top and continues along plane
+        // TC010: Starts on cylinder side and continues along cylinder side
 
         // ============ Boundary Values Tests ==============
         // **** Group: Ray is axis
