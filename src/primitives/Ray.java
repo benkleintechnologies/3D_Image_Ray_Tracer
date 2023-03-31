@@ -24,6 +24,15 @@ public class Ray {
     }
 
     /**
+     * Calculates 𝑷 = 𝑷𝟎 + 𝒕∙𝒗, the point found by adding the vector v of the ray scaled by t
+     * @param t factor to scale the ray
+     * @return 𝑷 = 𝑷𝟎 + 𝒕∙𝒗
+     */
+    public Point getPoint(double t){
+        return point.add(direction.scale(t));
+    }
+
+    /**
      * Getter for direction
      * @return direction of ray
      */
