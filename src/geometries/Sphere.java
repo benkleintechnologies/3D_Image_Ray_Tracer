@@ -3,6 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import static primitives.Util.*;
 
 import java.util.List;
 
@@ -56,6 +57,34 @@ public class Sphere extends RadialGeometry{
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        //Calculate vector pointing from the beginning of the ray to the center of the sphere
+        Vector u = center.subtract(ray.getPoint());
+        //Calculate distance to center of sphere in direction of the ray
+        double tm = u.dotProduct(ray.getDirection());
+        //Distance from center of sphere to the point reach by continuing the vector above or below center of sphere
+        double d = Math.sqrt(Math.abs(u.length() - Math.pow(tm,2)));
+        //Calulates distance from intersection ppint to middle of sphere on ray
+        double th = Math.sqrt(Math.abs(Math.pow(super.radius,2) - Math.pow(d,2)));
+        //Calculate distance to first point
+        double t1 = tm - th;
+        //Calculate distance to second point
+        double t2 = tm + th;
+        //Calculate first intersection point
+        Point p1 = ray.getPoint(t1);
+        //Calculate second intersection point
+        Point p2 = ray.getPoint(t2);
+
+        //Make sure there is intersection and return those points
+        if (d < super.radius){
+            if (isZero(p1.distance(center) - Math.pow(radius,2))){ // |𝑃1−𝑂|^2 − 𝑟^2 = 0
+                if (isZero(p2.distance(center) - Math.pow(radius,2))){ // |𝑃2−𝑂|^2 − 𝑟^2 = 0
+                    return List.of(p1,p2);
+                }
+                return List.of(p1);
+            }else if (isZero(p2.distance(center) - Math.pow(radius,2))) { // |𝑃2−𝑂|^2 − 𝑟^2 = 0
+                return List.of(p2);
+            }
+        }
         return null;
     }
 }
