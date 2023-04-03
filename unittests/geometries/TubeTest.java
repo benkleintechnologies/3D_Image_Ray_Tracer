@@ -41,26 +41,4 @@ class TubeTest {
         // Check that vector returned is normal to tube
         assertEquals(new Point(0,1,0), result, "Result is not the normal to the Tube at the point");
     }
-
-    /** Test method for {@link Tube#findIntersections(Ray)} . */
-    @Test
-    void testFindIntersections() {
-
-        // ============ Equivalence Partitions Tests ==============
-        // **** Group: No intersections
-        // TC01: Ray's line is outside the tube (0 points)
-        // TC02: Ray's line is inside the tube, parallel to axis (0 point)
-        // **** Group: Intersections
-        // TC03: Ray starts inside and crosses the tube (1 point)
-        // TC04: Ray starts before and crosses the tube (2 points)
-
-        // ============ Boundary Value Tests ==============
-        // **** Group: No intersections
-        // TC11: Starts on side and goes out (0 points)
-        // TC12: Ray tangent to Tube (0 points)
-        // TC13: Ray is axis (0 points)
-        // **** Group: 1 Intersection
-        // TC14: Starts on side and goes in (1 point)
-        // TC15: Starts on axis, orthogonal to it (1 point)
-    }
 }
