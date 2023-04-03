@@ -98,22 +98,80 @@ class CylinderTest {
         assertEquals(List.of(new Point(1,0,0)), result, "Ray starts in cylinder, goes out bottom, hits wrong point");
         // **** Group: Goes through bottom
         // TC05: Goes through bottom and side
+        r = new Ray(new Point(.5,0,0), new Vector(1,0,1));
+        Point p1 = new Point(1,0,.5);
+        Point p2 = new Point(1.5, 0, 1);
+        result = c.findIntersections(r);
+        assertEquals(2, result.size(), "Number points returned in case 05");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(p1, p2), result, "Wrong points going through bottom and side");
         // TC06: Goes through bottom and top
+        r = new Ray (new Point(0,0,.5), new Vector(1,0,0));
+        p1 = new Point(1,0,.5);
+        p2 = new Point(3,0,.5);
+        result = c.findIntersections(r);
+        assertEquals(2, result.size(),"Number points returned in case 06");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(p1, p2), result, "Wrong points going through top and bottom");
         // **** Group: Goes through top
         // TC07: Goes through top and side
+        r = new Ray(new Point(3.5, 0, 0), new Vector(-1,0,1));
+        p1 = new Point(3,0,.5);
+        p2 = new Point(2.5, 0,1);
+        result = c.findIntersections(r);
+        assertEquals(2, result.size(),"Number points returned in case 07");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(p1, p2), result, "Wrong points going through top and side");
         // **** Continues along surface
         // TC08: Starts in the bottom and continues along plane
+        r = new Ray(new Point(1,0,.5), new Vector(0,0,1));
+        result = c.findIntersections(r);
+        assertNull(result, "Ray goes along bottom plane");
         // TC09: Starts in the top and continues along plane
+        r = new Ray(new Point(3,0,.5), new Vector(0,0,1));
+        result = c.findIntersections(r);
+        assertNull(result, "Ray goes along top plane");
         // TC010: Starts on cylinder side and continues along cylinder side
-
+        r = new Ray(new Point(1.5, 0, 1), new Vector(1,0,0));
+        result = c.findIntersections(r);
+        assertNull(result, "Ray goes along side of cylinder");
         // ============ Boundary Values Tests ==============
         // **** Group: Ray is axis
         // TC11: Ray goes through axis and starts at bottom
+        r = new Ray(new Point(1,0,0), new Vector(1,0,0));
+        p1 = new Point(3,0,0);
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Number of points returned starting at bottom and going along axis");
+        assertEquals(List.of(p1), result, "Ray goes through axis and starts at bottom");
         // TC12: Ray goes through axis and starts at top
+        r = new Ray(new Point(3,0,0), new Vector(-1,0,0));
+        p1 = new Point(1,0,0);
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Number of points returned starting at top and going along axis");
+        assertEquals(List.of(p1), result, "Ray goes through axis and starts at top");
         // TC13: Ray goes through axis and starts in middle
+        r = new Ray(new Point(1.5,0,0), new Vector(1,0,0));
+        p1 = new Point(3,0,0);
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Number of points returned starting on axis and going along axis");
+        assertEquals(List.of(p1), result, "Ray goes through axis and starts at top");
         // **** Group: Ray hits corner
         // TC14: Ray goes through cylinder and hits a corner
+        r = new Ray(new Point(2,0,0), new Vector(1,0,1));
+        p1 = new Point(3,0,1);
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Ray goes through cylinder and hits a corner");
+        assertEquals(List.of(p1), result, "Ray goes through cylinder and hits a corner");
         // TC15: Ray hits a corner on top from outside
+        r = new Ray(new Point(4,0,0), new Vector(-1,0,1));
+        result = c.findIntersections(r);
+        assertNull(result, "Ray hits a corner on top from outside");
         // TC16: Ray hits a corner on bottom from outside
+        r = new Ray(new Point(.5,0,0), new Vector(.5,0,1));
+        result = c.findIntersections(r);
+        assertNull(result, "Ray hits a corner on top from outside");
     }
 }
