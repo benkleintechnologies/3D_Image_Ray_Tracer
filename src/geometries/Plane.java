@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import static primitives.Util.*;
 
 /**
  * Class Plane is the basic class of Geometry representing a plane in Cartesian 3-Dimensional coordinate system.
@@ -68,6 +69,17 @@ public class Plane implements Geometry{
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        //Return null if ray starts in plane
+        if (q0.equals(ray.getPoint())){
+            return null;
+        }
+        //Calculate distance from start of ray to the plane
+        double t = normal.dotProduct(q0.subtract(ray.getPoint())) / normal.dotProduct(ray.getDirection());
+        //If the point is in front of the ray, return the point
+        if (alignZero(t) > 0 && Double.isFinite(t)){
+            Point p = ray.getPoint().add(ray.getDirection().scale(t));
+            return List.of(p);
+        }
         return null;
     }
 }
