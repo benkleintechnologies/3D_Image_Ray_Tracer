@@ -3,6 +3,8 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
@@ -73,13 +75,27 @@ class CylinderTest {
     /** Test method for {@link Cylinder#findIntersections(Ray)}. */
     @Test
     void testFindIntersections() {
-
+        Cylinder c = new Cylinder(new Ray(new Point(1,0,0), new Vector(1,0,0)), 1,2);
         // ============ Equivalence Partitions Tests ==============
         // TC01: Outside Cylinder
+        Ray r = new Ray(new Point(0,2,0), new Vector(1,0,0));
+        assertNull(c.findIntersections(r), "Ray outside cylider");
         // **** Group: Starts in middle of cylinder
         // TC02: Starts in middle and goes out the side
+        r = new Ray(new Point(2,0,0), new Vector(0,1,0));
+        List<Point> result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Ray starts in cylinder, wrong number of intersections.");
+        assertEquals(List.of(new Point(2,1,0)), result, "Ray starts in cylider goes out side");
         // TC03: Starts in middle and goes through top
+        r = new Ray(new Point(2,0,0), new Vector(1,0,0));
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Ray starts in cylinder, goes out top, wrong number of intersections");
+        assertEquals(List.of(new Point(3,0,0)), result, "Ray starts in cylinder, goes out top, hits wrong point");
         // TC04: Starts in middle and goes through bottom
+        r = new Ray(new Point(2,0,0), new Vector(-1,0,0));
+        result = c.findIntersections(r);
+        assertEquals(1, result.size(), "Ray starts in cylinder, goes out top, wrong number of intersections");
+        assertEquals(List.of(new Point(1,0,0)), result, "Ray starts in cylinder, goes out bottom, hits wrong point");
         // **** Group: Goes through bottom
         // TC05: Goes through bottom and side
         // TC06: Goes through bottom and top
