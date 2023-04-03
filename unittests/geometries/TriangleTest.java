@@ -62,11 +62,11 @@ class TriangleTest {
         // TC11: Ray hits edge of triangle
         ray = new Ray(new Point(0,.5,-1), new Vector(0,0,1));
         result = t.findIntersections(ray);
-        assertEquals(new Point(0,.5,0), result.get(0), "Ray hits edge of triangle");
+        assertNull(result, "Ray hits edge of triangle");
         // TC12: Ray hits corner of triangle
         ray = new Ray(new Point(0,0,-1), new Vector(0,0,1));
         result = t.findIntersections(ray);
-        assertEquals(new Point(0,0,0), result.get(0), "Ray hits corner of triangle");
+        assertNull(result, "Ray hits corner of triangle");
         // **** Group: Does not intersect Triangle
         // TC13: Ray hits extension of side of triangle
         ray = new Ray(new Point(-1,2,-1), new Vector(0,0,1));
