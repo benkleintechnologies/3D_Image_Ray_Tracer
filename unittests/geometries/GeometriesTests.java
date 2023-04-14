@@ -48,19 +48,19 @@ public class GeometriesTests {
         ray = new Ray(new Point(20,0,1), new Vector(-1, 0, 0));
         result = G.findIntersections(ray);
         assertEquals(8, result.size(), "All geometries intersect, wrong num intersections");
-        //itersections with s2
-        Point pt1 = new Point(13,0,1);
+        //intersections with s2
+        pt1 = new Point(13,0,1);
         Point pt2 = new Point(7,0,1);
-        //itersections with s1
+        //intersections with s1
         Point pt3 = new Point(5,0,1);
         Point pt4 = new Point(1,0,1);
-        //itersections with p1
+        //intersections with p1
         Point pt5 = new Point(0,0,1);
-        //itersections with p2
+        //intersections with p2
         Point pt6 = new Point(-4,0,1);
-        //itersections with t1
+        //intersections with t1
         Point pt7 = new Point(-2,0,1);
-        //itersections with t1
+        //intersections with t1
         Point pt8 = new Point(-10,0,1);
         List<Point> points = List.of(pt1, pt2,pt3,pt4,pt5,pt6,pt7,pt8);
         //May need to be changed to ensure proper order
