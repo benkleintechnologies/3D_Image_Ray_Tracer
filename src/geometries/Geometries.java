@@ -3,6 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class Geometries implements Intersectable{
      * Default Constructor for Geometries which initializes empty list
      */
     public Geometries() {
-        this.geometries = List.of();
+        this.geometries = new LinkedList<Intersectable>();
     }
 
     /**
@@ -25,7 +26,7 @@ public class Geometries implements Intersectable{
      * @param geometries to initialize list
      */
     public Geometries(Intersectable... geometries) {
-        this.geometries = List.of(geometries);
+        this.geometries = new LinkedList<Intersectable>(List.of(geometries));
     }
 
     /**

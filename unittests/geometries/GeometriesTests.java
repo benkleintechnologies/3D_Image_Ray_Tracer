@@ -26,44 +26,30 @@ public class GeometriesTests {
         Triangle t2 = new Triangle(new Point(-10,-4,0), new Point(-10,4,0), new Point(-10,0,5));
         Plane p1 = new Plane(new Point(-4,2,0), new Point(-4,4,0), new Point(-4,4,2));
         Plane p2 = new Plane(new Point(0,2,0), new Point(0,4,0), new Point(0,4,2));
-
+        G.add(s1, s2, t1, t2, p1, p2);
         // ============ Equivalence Partitions Tests ==============
         // TC01: Several (but not all) geometries intersect
-        Ray ray = new Ray(new Point(0,0,-1), new Vector(1,1,1));
-        Point pt1 = new Point(1,1,0);
-
+        Ray ray = new Ray(new Point(6,0,1), new Vector(-1,0,0));
         List<Point> result = G.findIntersections(ray);
+        assertEquals(6, result.size(), "Intersects several geometries");
 
         // ============ Boundary Value Tests ==============
         // TC11: Empty geometries collection
-
+        Geometries empty = new Geometries();
+        result = empty.findIntersections(ray);
+        assertNull(result, "Empty Geometries collection");
         // TC12: No intersection point
+        ray = new Ray(new Point(6,0,0), new Vector(0,1,0));
         result = G.findIntersections(ray);
         assertNull(result, "No intersection point");
         // TC13: Only one geometry intersects
-
-        // TC14: Several (but not all) geometries intersect
-
-        // TC15: All geometries intersect
+        ray = new Ray(new Point(3,3,0),new Vector(0, -1, 0));
+        result = G.findIntersections(ray);
+        assertEquals(2, result.size(), "Intersects only one geometry");
+        // TC14: All geometries intersect
         ray = new Ray(new Point(20,0,1), new Vector(-1, 0, 0));
         result = G.findIntersections(ray);
         assertEquals(8, result.size(), "All geometries intersect, wrong num intersections");
-        //itersections with s2
-        Point pt1 = new Point(13,0,1);
-        Point pt2 = new Point(7,0,1);
-        //itersections with s1
-        Point pt3 = new Point(5,0,1);
-        Point pt4 = new Point(1,0,1);
-        //itersections with p1
-        Point pt5 = new Point(0,0,1);
-        //itersections with p2
-        Point pt6 = new Point(-4,0,1);
-        //itersections with t1
-        Point pt7 = new Point(-2,0,1);
-        //itersections with t1
-        Point pt8 = new Point(-10,0,1);
-        List<Point> points = List.of(pt1, pt2,pt3,pt4,pt5,pt6,pt7,pt8);
-        //May need to be changed to ensure proper order
-        assertEquals(result, points, "All geometries are intersected");
+
     }
 }
