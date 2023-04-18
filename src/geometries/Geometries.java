@@ -18,7 +18,7 @@ public class Geometries implements Intersectable{
      * Default Constructor for Geometries which initializes empty list
      */
     public Geometries() {
-        this.geometries = new LinkedList<Intersectable>();
+        this.geometries = new LinkedList<>();
     }
 
     /**
@@ -26,7 +26,7 @@ public class Geometries implements Intersectable{
      * @param geometries to initialize list
      */
     public Geometries(Intersectable... geometries) {
-        this.geometries = new LinkedList<Intersectable>(List.of(geometries));
+        this.geometries = new LinkedList<>(List.of(geometries));
     }
 
     /**
@@ -39,6 +39,16 @@ public class Geometries implements Intersectable{
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        List<Point> pointList = new LinkedList<>();
+        for (Intersectable g: geometries) {
+            List<Point> shape = g.findIntersections(ray);
+            if (shape != null) {
+                pointList.addAll(shape);
+            }
+        }
+        if (pointList.isEmpty()){
+            return null;
+        }
+        return pointList;
     }
 }
