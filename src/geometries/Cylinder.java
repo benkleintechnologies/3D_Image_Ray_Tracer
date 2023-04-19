@@ -4,7 +4,11 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * Class Cylinder is the class representing a cylinder (as a type of Tube) in Cartesian 3-Dimensional coordinate system.

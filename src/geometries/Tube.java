@@ -4,10 +4,13 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static primitives.Util.*;
+
 /**
- * Class Sphere is the basic class representing a Tube in the Cartesian
+ * Class Tube is the basic class representing a Tube in the Cartesian
  * 3-Dimensional coordinate system.
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
@@ -67,4 +70,5 @@ public class Tube extends RadialGeometry{
     public List<Point> findIntersections(Ray ray) {
         return null;
     }
+
 }
