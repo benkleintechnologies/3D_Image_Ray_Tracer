@@ -4,8 +4,10 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static java.util.Objects.isNull;
 import static primitives.Util.isZero;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -84,6 +86,47 @@ public class Polygon implements Geometry {
 
    @Override
    public List<Point> findIntersections(Ray ray) {
+      List<Point> intersections = plane.findIntersections(ray);
+      if (isNull(intersections)){
+         return null;
+      }
+
+      // Vectors from starting point of the ray to each corner of the triangle
+      List<Vector> vectors = new ArrayList<>();
+      for(Point p : vertices){
+         vectors.add(p.subtract(ray.getPoint()));
+      }
+
+      // Normals to the plane extended from the edges of the triangle
+      List<Vector> normals = new ArrayList();
+      for(int i = 0; i < vectors.size(); i++){
+         if(i < vectors.size() - 1) {
+            normals.add(vectors.get(i).crossProduct(vectors.get(i + 1)).normalize());
+         }
+         else{
+            normals.add(vectors.get(i).crossProduct(vectors.get(0)).normalize());
+         }
+      }
+
+      List<Double> tValues = new ArrayList();
+      for(Vector n : normals){
+         tValues.add(ray.getDirection().dotProduct(n));
+      }
+
+      boolean allPositive = true;
+      boolean allNegative = true;
+      for(double t : tValues){
+         if(t < 0){
+            allPositive = false;
+         }
+         if(t > 0){
+            allNegative = false;
+         }
+      }
+
+      if(allPositive || allNegative){
+         return intersections;
+      }
       return null;
    }
 }
