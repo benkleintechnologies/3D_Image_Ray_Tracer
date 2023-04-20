@@ -1,10 +1,6 @@
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
 import org.junit.jupiter.api.Test;
@@ -89,17 +85,46 @@ public class PolygonTests {
     /** Test method for {@link geometries.Polygon#findIntersections(Ray)}.  */
     @Test
     public void testFindIntersections() {
+        Polygon poly = new Polygon(new Point(1,0,0), new Point(-1,0,0), new Point(1,0,2), new Point(-1,0,2));
         // ============ Equivalence Partitions Tests ==============
         // TC01: Intersection inside Polygon
-        // TC02: Intersection outside Polygon on one edge
+        Ray ray = new Ray(new Point(0,-1,1), new Vector(0,1,0));
+        List<Point> result = poly.findIntersections(ray);
+        assertEquals(1, result.size(), "Ray intersection inside Polygon, wrong number of intersections.");
+        assertEquals(new Point(0,0,1), result.get(0), "Ray intersection inside Polygon");
+        // TC02: Intersection outside Polygon next to one edge
+        ray = new Ray(new Point(-2,-1,1), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray intersection outside Polygon next to one edge");
         // TC03: Intersection outside Polygon on two edges
+        ray = new Ray(new Point(-2,-1,3), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray intersection outside Polygon between two edge");
         // TC04: Ray parallel to Polygon
+        ray = new Ray(new Point(0,-1,1), new Vector(1,0,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray parallel to Polygon");
         // TC05: Ray starts after Polygon
+        ray = new Ray(new Point(0,1,1), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray starts after Polygon");
 
         // ============= Boundary Values Tests ==================
         // TC10: Ray intersects Polygon edge
+        ray = new Ray(new Point(-1,-1,1), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray intersects Polygon edge");
         // TC11: Ray intersects Polygon corner
+        ray = new Ray(new Point(-1,-1,2), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray intersects Polygon corner");
         // TC12: Ray starts on Polygon edge
+        ray = new Ray(new Point(-1,0,1), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray starts on Polygon edge");
         // TC13: Ray starts on Polygon corner
+        ray = new Ray(new Point(-1,0,2), new Vector(0,1,0));
+        result = poly.findIntersections(ray);
+        assertNull(result, "Ray starts on Polygon corner");
     }
 }
