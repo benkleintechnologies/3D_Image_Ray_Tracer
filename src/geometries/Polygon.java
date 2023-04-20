@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static java.util.Objects.isNull;
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class Polygon implements Geometry {
          vectors.add(p.subtract(ray.getPoint()));
       }
 
+
       // Normals to the plane extended from the edges of the triangle
       List<Vector> normals = new ArrayList();
       for(int i = 0; i < vectors.size(); i++){
@@ -116,16 +118,17 @@ public class Polygon implements Geometry {
       boolean allPositive = true;
       boolean allNegative = true;
       for(double t : tValues){
-         if(t < 0){
+         if(t <= 0){
             allPositive = false;
          }
-         if(t > 0){
+         if(t >= 0){
             allNegative = false;
          }
       }
 
+
       if(allPositive || allNegative){
-         return intersections;
+            return intersections;
       }
       return null;
    }
