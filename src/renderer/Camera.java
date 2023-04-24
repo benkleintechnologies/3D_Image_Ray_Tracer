@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import static java.lang.Math.floor;
+
 /**
  * Class Camera represents a camera in a 3D space.
  * @author Eli Hawk and Binyamin Klein
@@ -98,8 +100,26 @@ public class Camera {
      * @return the ray
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        //TODO: Implement this method
-        return null;
+        //Find point of middle pixel of the view plane
+        Point middle = p0.add(vTo.scale(distance));
+
+        //Find the top left corner of the view plane
+        Point vTopLeft = middle.add(vRight.scale(floor(-nX/2)).add(vUp.scale(floor(nY/2))));
+
+        //Find the desired pixel relative to the top left corner
+        Point pixel;
+        if (i == 0 && j == 0){
+            pixel = vTopLeft;
+        }else if (i == 0){
+            pixel = vTopLeft.add(vRight.scale(j));
+        }else if(j == 0){
+            pixel = vTopLeft.add(vUp.scale(-i));
+        }else{
+            pixel = vTopLeft.add(vRight.scale(j).add(vUp.scale(-i)));
+        }
+
+        //Return ray from the camera to the center of the pixel found
+        return new Ray(p0, pixel.subtract(p0));
     }
 
 }
