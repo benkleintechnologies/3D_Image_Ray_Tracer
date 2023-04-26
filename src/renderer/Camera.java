@@ -100,22 +100,26 @@ public class Camera {
      * @return the ray
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        //Find point of middle pixel of the view plane
+        //Find middle of View Plane
         Point middle = p0.add(vTo.scale(distance));
 
-        //Find the top left corner of the view plane
-        Point vTopLeft = middle.add(vRight.scale(floor(-nX/2)).add(vUp.scale(floor(nY/2))));
+        //Calculate size of pixel
+        double pixelWidth = width / nX;
+        double pixelHeight = height / nY;
+
+        //Find middle of the top left pixel
+        Point vTopLeft = middle.add(vRight.scale((-width/2) + (pixelWidth/2)).add(vUp.scale((height/2) - (pixelHeight/2))));
 
         //Find the desired pixel relative to the top left corner
         Point pixel;
         if (i == 0 && j == 0){
             pixel = vTopLeft;
         }else if (i == 0){
-            pixel = vTopLeft.add(vRight.scale(j));
+            pixel = vTopLeft.add(vRight.scale(j*pixelWidth));
         }else if(j == 0){
-            pixel = vTopLeft.add(vUp.scale(-i));
+            pixel = vTopLeft.add(vUp.scale(-i*pixelHeight));
         }else{
-            pixel = vTopLeft.add(vRight.scale(j).add(vUp.scale(-i)));
+            pixel = vTopLeft.add(vRight.scale(j*pixelWidth).add(vUp.scale(-i*pixelHeight)));
         }
 
         //Return ray from the camera to the center of the pixel found
