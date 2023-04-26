@@ -52,6 +52,9 @@ public class IntegrationTest {
     private List<Point> intersections(List<Ray> rays, Geometry geometry) {
         List<Point> intersections = new ArrayList<>();
         for (Ray ray : rays) {
+            if (geometry.findIntersections(ray) == null) {
+                continue;
+            }
             intersections.addAll(geometry.findIntersections(ray));
         }
         if (intersections.isEmpty()) {
@@ -67,7 +70,7 @@ public class IntegrationTest {
     void testCameraSphereIntersections() {
         //=============== First Test Case ===============//
         //Create Camera at Origin with distance 1 from the view plane which is size 3x3
-        Camera camera = createCamera(new Point(0, 0, -3));
+        Camera camera = createCamera(new Point(0, 0, 0));
         //Create a list of rays from the camera to the view plane at each pixel
         List<Ray> rays = generateRays(camera);
         //Create a sphere
