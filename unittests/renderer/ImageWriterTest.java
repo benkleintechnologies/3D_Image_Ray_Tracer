@@ -11,6 +11,9 @@ import renderer.*;
  */
 public class ImageWriterTest {
 
+    /**
+     * Test method for {@link ImageWriter#writeToImage()}.
+     */
     @Test
     void writeImageTest() {
         //Create an image made of one color background and a different color grid.
