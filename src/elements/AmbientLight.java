@@ -1,5 +1,8 @@
 package elements;
 
+import primitives.Color;
+import primitives.Double3;
+
 /**
  * Class AmbientLight represents the ambient light in the scene in a 3D space.
  * @author Eli Hawk and Binyamin Klein
