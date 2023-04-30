@@ -12,8 +12,8 @@ import primitives.Color;
 public class Scene {
     public String name;
     public Color background = Color.BLACK;
-    AmbientLight ambientLight = new AmbientLight();
-    Geometries geometries;
+    public AmbientLight ambientLight = new AmbientLight();
+    public Geometries geometries;
 
     /**
      * Constructor that receives the scene's name and initializes an empty collection of geometries
