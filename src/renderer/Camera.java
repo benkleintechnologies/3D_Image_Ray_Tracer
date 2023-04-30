@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static java.lang.Math.floor;
 
 /**
@@ -16,8 +18,8 @@ public class Camera {
     private Vector vUp;
     private Vector vRight;
     //View Plane variables
-    private double width;
-    private double height;
+    private int width;
+    private int height;
     private double distance;
 
     /**
@@ -75,7 +77,7 @@ public class Camera {
      * @param height of the View Plane
      * @return this camera object
      */
-    public Camera setVPSize(double width, double height) {
+    public Camera setVPSize(int width, int height) {
         this.width  = width;
         this.height = height;
         return this;
@@ -119,6 +121,24 @@ public class Camera {
         //Return ray from the camera to the center of the pixel found
         return new Ray(p0, Pij.subtract(p0));
     }
+
+    /**
+     * Render the image with the camera object
+     */
+    public void renderImage(){
+        if (p0 == null || vTo == null || vUp == null || vRight == null) {// || width == null || height == null || distance == null){
+            throw new MissingResourceException("Error: Null value", "Camera", null);
+        }
+        Ray ray;
+        Point p;
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+               imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(width, height, j, i)));
+            }
+        }
+
+    }
+
 
 
 }
