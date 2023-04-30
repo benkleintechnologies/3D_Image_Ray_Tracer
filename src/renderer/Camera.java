@@ -4,8 +4,6 @@ import primitives.*;
 
 import java.util.MissingResourceException;
 
-import static java.lang.Math.floor;
-
 /**
  * Class Camera represents a camera in a 3D space.
  * @author Eli Hawk and Binyamin Klein
@@ -128,8 +126,8 @@ public class Camera {
         Point Pc = p0.add(vTo.scale(distance));
 
         //Calculate size of pixel
-        double Ry = height / nY;
-        double Rx = width / nX;
+        double Ry = (double) height / nY;
+        double Rx = (double) width / nX;
         // Calculate the distance from the center to the (i,j) coordinate
         double Yi = -(i-(nY-1)/2.0)*Ry;
         double Xj = (j-(nX-1)/2.0)*Rx;
@@ -154,8 +152,8 @@ public class Camera {
             throw new MissingResourceException("ImageWriter not set", "Camera", "printGrid");
         }
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < imageWriter.getNy(); i++) {
+            for (int j = 0; j < imageWriter.getNx(); j++) {
                 if (i % interval == 0 || j % interval == 0) {
                     imageWriter.writePixel(j, i, color);
                 }
@@ -179,13 +177,12 @@ public class Camera {
      * Render the image with the camera object
      */
     public void renderImage(){
-        if (p0 == null || vTo == null || vUp == null || vRight == null) {// || width == null || height == null || distance == null){
+        if (imageWriter == null || rayTracer == null){
             throw new MissingResourceException("Error: Null value", "Camera", null);
         }
-        Ray ray;
-        Point p;
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
+
+        for(int i = 0; i < imageWriter.getNy(); i++){
+            for(int j = 0; j < imageWriter.getNx(); j++){
                imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(width, height, j, i)));
             }
         }
