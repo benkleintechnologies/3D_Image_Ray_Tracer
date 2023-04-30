@@ -2,7 +2,7 @@ package renderer;
 
 import primitives.*;
 
-import static java.lang.Math.floor;
+import java.util.MissingResourceException;
 
 /**
  * Class Camera represents a camera in a 3D space.
@@ -19,6 +19,8 @@ public class Camera {
     private double width;
     private double height;
     private double distance;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
     /**
      * Constructor for Camera. Throws IllegalArgumentException if vTo and vUp are not orthogonal
@@ -92,6 +94,26 @@ public class Camera {
     }
 
     /**
+     * Setter for the ImageWriter
+     * @param imageWriter
+     * @return this camera object
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * Setter for the RayTracer
+     * @param rayTracer
+     * @return this camera object
+     */
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
+    /**
      * Constructs a ray from the camera through a pixel
      * @param nX represents the number of columns of pixels
      * @param nY represents the number of rows of pixels
@@ -118,6 +140,37 @@ public class Camera {
         }
         //Return ray from the camera to the center of the pixel found
         return new Ray(p0, Pij.subtract(p0));
+    }
+
+    /**
+     * Prints a grid with the given interval and color on top of the image
+     * @param interval the size of the boxes
+     * @param color the color of the grid
+     */
+    public void printGrid(int interval, Color color){
+        if (imageWriter == null) {
+            throw new MissingResourceException("ImageWriter not set", "Camera", "printGrid");
+        }
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (i % interval == 0 || j % interval == 0) {
+                    imageWriter.writePixel(j, i, color);
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks to make sure ImageWriter is set and calls writeToImage
+     * Otherwise throws MissingResourceException
+     */
+    public void writeToImage(){
+        if (imageWriter == null) {
+            throw new MissingResourceException("ImageWriter not set", "Camera", "writeToImage");
+        }
+
+        imageWriter.writeToImage();
     }
 
 
