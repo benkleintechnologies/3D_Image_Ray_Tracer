@@ -7,6 +7,7 @@ package primitives;
  * 563385586 & 576708589
  */
 public class Point {
+    public static final Point ZERO = new Point(new Double3(0));
     /** Point of type Double3 */
     final Double3 xyz;
 
