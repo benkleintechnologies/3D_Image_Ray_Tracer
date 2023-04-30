@@ -5,18 +5,18 @@ import primitives.Ray;
 import scene.Scene;
 
 /**
- * Abstract Class RayTraceBase is the basis for ray tracing
+ * Abstract Class RayTracerBase is the basis for ray tracing
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public abstract class RayTraceBase {
+public abstract class RayTracerBase {
     protected Scene scene;
 
     /**
-     * Constructor for RayTraceBase
+     * Constructor for RayTracerBase
      * @param scene the scene
      */
-    public RayTraceBase(Scene scene) {
+    public RayTracerBase(Scene scene) {
         this.scene = scene;
     }
 
