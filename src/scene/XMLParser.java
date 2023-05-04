@@ -24,6 +24,11 @@ public class XMLParser {
     Scene scene;
     Geometries geometries = new Geometries();
 
+    Double3 parseNumber(String number){
+        String[] split = number.split(" ");
+        return new Double3(Double.parseDouble(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]));
+    }
+
     public XMLParser(String fileName){
         this.FILENAME = fileName;
     }
@@ -41,18 +46,12 @@ public class XMLParser {
             // get scene background color
             Node sceneNode = doc.getElementsByTagName("scene").item(0);
             String backgroundString = ((Element) sceneNode).getAttribute("background-color");
-            int red = Integer.parseInt(backgroundString.split(" ")[0]);
-            int green = Integer.parseInt(backgroundString.split(" ")[1]);
-            int blue = Integer.parseInt(backgroundString.split(" ")[2]);
-            Color background = new Color(red, green, blue);
+            Color background = new Color(parseNumber(backgroundString));
 
             //get ambient light
             Node ambientLightNode = doc.getElementsByTagName("ambient-light").item(0);
             String ambientLightString = ((Element) ambientLightNode).getAttribute("color");
-            red = Integer.parseInt(ambientLightString.split(" ")[0]);
-            green = Integer.parseInt(ambientLightString.split(" ")[1]);
-            blue = Integer.parseInt(ambientLightString.split(" ")[2]);
-            AmbientLight ambientLight = new AmbientLight(new Color(red, green, blue), new Double3(1,1,1));
+            AmbientLight ambientLight = new AmbientLight(new Color(parseNumber(ambientLightString)), new Double3(1,1,1));
 
             // get children of <geometries> (i.e. the shpaes)
             NodeList list = doc.getElementsByTagName("geometries").item(0).getChildNodes();
@@ -73,15 +72,15 @@ public class XMLParser {
                         String p0String = element.getAttribute("p0");
                         String p1String = element.getAttribute("p1");
                         String p2String = element.getAttribute("p2");
-                        Point p0 = new Point(Integer.parseInt(p0String.split(" ")[0]), Integer.parseInt(p0String.split(" ")[1]), Integer.parseInt(p0String.split(" ")[2]));
-                        Point p1 = new Point(Integer.parseInt(p1String.split(" ")[0]), Integer.parseInt(p1String.split(" ")[1]), Integer.parseInt(p1String.split(" ")[2]));
-                        Point p2 = new Point(Integer.parseInt(p2String.split(" ")[0]), Integer.parseInt(p2String.split(" ")[1]), Integer.parseInt(p2String.split(" ")[2]));
+                        Point p0 = new Point(parseNumber(p0String));
+                        Point p1 = new Point(parseNumber(p1String));
+                        Point p2 = new Point(parseNumber(p2String));
                         //Create and add Triangle to geometries list
                         Triangle triangle = new Triangle(p0, p1, p2);
                         geometries.add(triangle);
                     } else if (shapeType.equals("sphere")) {
                         String centerString = element.getAttribute("center");
-                        Point center = new Point(Integer.parseInt(centerString.split(" ")[0]), Integer.parseInt(centerString.split(" ")[1]), Integer.parseInt(centerString.split(" ")[2]));
+                        Point center = new Point(parseNumber(centerString));
                         double radius = Double.parseDouble(element.getAttribute("radius"));
                         //Create and add Sphere to geometries list
                         Sphere sphere = new Sphere(radius, center);
@@ -90,9 +89,9 @@ public class XMLParser {
                         String p0String = element.getAttribute("p0");
                         String p1String = element.getAttribute("p1");
                         String p2String = element.getAttribute("p2");
-                        Point p0 = new Point(Integer.parseInt(p0String.split(" ")[0]), Integer.parseInt(p0String.split(" ")[1]), Integer.parseInt(p0String.split(" ")[2]));
-                        Point p1 = new Point(Integer.parseInt(p1String.split(" ")[0]), Integer.parseInt(p1String.split(" ")[1]), Integer.parseInt(p1String.split(" ")[2]));
-                        Point p2 = new Point(Integer.parseInt(p2String.split(" ")[0]), Integer.parseInt(p2String.split(" ")[1]), Integer.parseInt(p2String.split(" ")[2]));
+                        Point p0 = new Point(parseNumber(p0String));
+                        Point p1 = new Point(parseNumber(p1String));
+                        Point p2 = new Point(parseNumber(p2String));
                         //Create and add Plane to geometries list
                         Plane plane = new Plane(p0, p1, p2);
                         geometries.add(plane);
@@ -103,7 +102,7 @@ public class XMLParser {
                         for (int i = 0; i < attributes.getLength(); i++){
                             Node attribute = attributes.item(i);
                             String pointString =  attribute.getNodeValue();
-                            Point point = new Point(Integer.parseInt(pointString.split(" ")[0]), Integer.parseInt(pointString.split(" ")[1]), Integer.parseInt(pointString.split(" ")[2]));
+                            Point point = new Point(parseNumber(pointString));
                             points.add(point);
                         }
                         //Create and add Polygon to geometries list
