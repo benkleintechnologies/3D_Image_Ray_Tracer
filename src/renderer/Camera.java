@@ -95,7 +95,7 @@ public class Camera {
 
     /**
      * Setter for the ImageWriter
-     * @param imageWriter
+     * @param imageWriter object
      * @return this camera object
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
@@ -105,7 +105,7 @@ public class Camera {
 
     /**
      * Setter for the RayTracer
-     * @param rayTracer
+     * @param rayTracer object
      * @return this camera object
      */
     public Camera setRayTracer(RayTracerBase rayTracer) {
@@ -183,12 +183,9 @@ public class Camera {
 
         for(int i = 0; i < imageWriter.getNy(); i++){
             for(int j = 0; j < imageWriter.getNx(); j++){
-               imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(width, height, j, i)));
+               imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
             }
         }
-
     }
-
-
 
 }

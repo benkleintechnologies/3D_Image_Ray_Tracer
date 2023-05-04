@@ -10,6 +10,7 @@ import elements.AmbientLight;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+import scene.XMLParser;
 
 /** Test rendering a basic image
  * @author Dan */
@@ -81,11 +82,8 @@ public class RenderTests {
    /** Test for XML based scene - for bonus */
    @Test
    public void basicRenderXml() {
-      Scene  scene  = new Scene("XML Test scene");
-      // enter XML file name and parse from XML file into scene object
-      // using the code you added in appropriate packages
-      // ...
-      // NB: unit tests is not the correct place to put XML parsing code
+      XMLParser parser = new XMLParser("basicRenderTestTwoColors.xml");
+      Scene scene = parser.parse();
 
       Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0))     //
          .setVPDistance(100)                                                                //
