@@ -5,7 +5,6 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static java.util.Objects.isNull;
-import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 /** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
  * @author Dan */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
    /** List of polygon's vertices */
    protected final List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -86,8 +85,8 @@ public class Polygon implements Geometry {
    public Vector getNormal(Point point) { return plane.getNormal(); }
 
    @Override
-   public List<Point> findIntersections(Ray ray) {
-      List<Point> intersections = plane.findIntersections(ray);
+   public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+      List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
       if (isNull(intersections)){
          return null;
       }
@@ -100,7 +99,7 @@ public class Polygon implements Geometry {
 
 
       // Normals to the plane extended from the edges of the triangle
-      List<Vector> normals = new ArrayList();
+      List<Vector> normals = new ArrayList<>();
       for(int i = 0; i < vectors.size(); i++){
          if(i < vectors.size() - 1) {
             normals.add(vectors.get(i).crossProduct(vectors.get(i + 1)).normalize());
@@ -110,7 +109,7 @@ public class Polygon implements Geometry {
          }
       }
 
-      List<Double> tValues = new ArrayList();
+      List<Double> tValues = new ArrayList<>();
       for(Vector n : normals){
          tValues.add(ray.getDirection().dotProduct(n));
       }

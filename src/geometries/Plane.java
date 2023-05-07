@@ -12,7 +12,7 @@ import static primitives.Util.*;
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public class Plane implements Geometry{
+public class Plane extends Geometry{
     Point q0;
     Vector normal;
 
@@ -68,7 +68,7 @@ public class Plane implements Geometry{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         //Return null if ray starts in plane
         if (q0.equals(ray.getPoint())){
             return null;
@@ -78,7 +78,7 @@ public class Plane implements Geometry{
         //If the point is in front of the ray, return the point
         if (alignZero(t) > 0 && Double.isFinite(t)){
             Point p = ray.getPoint().add(ray.getDirection().scale(t));
-            return List.of(p);
+            return List.of(new GeoPoint(this,p));
         }
         return null;
     }

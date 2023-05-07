@@ -4,10 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static primitives.Util.*;
 
 /**
  * Class Tube is the basic class representing a Tube in the Cartesian
@@ -67,7 +65,7 @@ public class Tube extends RadialGeometry{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }
 

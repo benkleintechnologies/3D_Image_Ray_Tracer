@@ -35,13 +35,13 @@ public class Triangle extends Polygon{
     //getNormal is inherited from Polygon
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> intersections = plane.findIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
         if (isNull(intersections)){
             return null;
         }
 
-        Point intersection = intersections.get(0);
+        GeoPoint intersection = intersections.get(0);
         // Vectors from starting point of the ray to each corner of the triangle
         Vector v1 = vertices.get(0).subtract(ray.getPoint());
         Vector v2 = vertices.get(1).subtract(ray.getPoint());

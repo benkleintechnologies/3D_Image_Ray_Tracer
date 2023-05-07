@@ -6,7 +6,7 @@ package geometries;
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public abstract class RadialGeometry implements Geometry{
+public abstract class RadialGeometry extends Geometry{
     protected double radius;
 
     /**
