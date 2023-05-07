@@ -1,21 +1,18 @@
 package scene;
 
-import elements.AmbientLight;
+import lighting.AmbientLight;
 import geometries.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import primitives.Color;
 import primitives.Double3;
 import primitives.Point;
-import primitives.Ray;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
