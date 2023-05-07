@@ -1,6 +1,7 @@
 import geometries.*;
 import primitives.*;
 import renderer.Camera;
+import geometries.Intersectable.GeoPoint;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,13 +50,13 @@ public class IntegrationTest {
      * @param geometry the geometry
      * @return a list of intersections
      */
-    private List<Point> intersections(List<Ray> rays, Geometry geometry) {
-        List<Point> intersections = new ArrayList<>();
+    private List<GeoPoint> intersections(List<Ray> rays, Geometry geometry) {
+        List<GeoPoint> intersections = new ArrayList<>();
         for (Ray ray : rays) {
-            if (geometry.findIntersections(ray) == null) {
+            if (geometry.findGeoIntersections(ray) == null) {
                 continue;
             }
-            intersections.addAll(geometry.findIntersections(ray));
+            intersections.addAll(geometry.findGeoIntersections(ray));
         }
         if (intersections.isEmpty()) {
             return null;
@@ -76,7 +77,7 @@ public class IntegrationTest {
         //Create a sphere
         Sphere sphere = new Sphere(1, new Point(0, 0, -3));
         //Find intersections
-        List<Point> intersections = intersections(rays, sphere);
+        List<GeoPoint> intersections = intersections(rays, sphere);
         //Check the number of intersections
         assertEquals(2, intersections.size(), "Wrong number of intersections, First Camera-Sphere test");
 
@@ -134,7 +135,7 @@ public class IntegrationTest {
         //Create a plane
         Plane plane = new Plane(new Point(0, 0, -5), new Vector(0, 0, 1));
         //Find intersections
-        List<Point> intersections = intersections(rays, plane);
+        List<GeoPoint> intersections = intersections(rays, plane);
         //Check the number of intersections
         assertEquals(9, intersections.size(), "Wrong number of intersections, First Camera-Plane test");
 
@@ -168,7 +169,7 @@ public class IntegrationTest {
         //Create a triangle
         Triangle triangle = new Triangle(new Point(0, 1, -2), new Point(-1, -1, -2), new Point(1, -1, -2));
         //Find intersections
-        List<Point> intersections = intersections(rays, triangle);
+        List<GeoPoint> intersections = intersections(rays, triangle);
         //Check the number of intersections
         assertEquals(1, intersections.size(), "Wrong number of intersections, First Camera-Triangle test");
 

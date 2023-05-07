@@ -1,6 +1,7 @@
 package primitives;
 
 import java.util.List;
+import geometries.Intersectable.GeoPoint;
 
 /**
  * Class Ray is the basic class representing a ray starting at a point in Cartesian
@@ -65,6 +66,26 @@ public class Ray {
      */
     public Vector getDirection() {
         return direction;
+    }
+
+    /**
+     * Find the closest GeoPoint
+     * @param points the points to search
+     * @return GeoPoint
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> points){
+        GeoPoint closestPoint = null;
+        double minDistance = Double.MAX_VALUE;
+
+        //loop through points and find closest to head
+        for (GeoPoint point : points) {
+            double distance = point.point.distance(this.point);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestPoint = point;
+            }
+        }
+        return closestPoint;
     }
 
     @Override

@@ -15,6 +15,11 @@ import scene.XMLParser;
  * @author Dan */
 public class RenderTests {
 
+   private static final Double3 WHITE = new Double3(255,255,255);
+   private static final Double3 RED = new Double3(255,0,0);
+   private static final Double3 GREEN = new Double3(0,255,0);
+   private static final Double3 BLUE = new Double3(0,0,255);
+
    /** Produce a scene with basic 3D model and render it into a png image with a
     * grid */
    @Test

@@ -2,6 +2,7 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.*;
+import geometries.Intersectable.GeoPoint;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class GeometriesTests {
 
-    /** Test method for {@link Geometries#findIntersections(Ray)}. */
+    /** Test method for {@link Geometries#findGeoIntersections(Ray)}. */
     @Test
     void testFindIntersections() {
         Geometries G = new Geometries();
@@ -30,25 +31,25 @@ public class GeometriesTests {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Several (but not all) geometries intersect
         Ray ray = new Ray(new Point(6,0,1), new Vector(-1,0,0));
-        List<Point> result = G.findIntersections(ray);
+        List<GeoPoint> result = G.findGeoIntersections(ray);
         assertEquals(6, result.size(), "Intersects several geometries");
 
         // ============ Boundary Value Tests ==============
         // TC11: Empty geometries collection
         Geometries empty = new Geometries();
-        result = empty.findIntersections(ray);
+        result = empty.findGeoIntersections(ray);
         assertNull(result, "Empty Geometries collection");
         // TC12: No intersection point
         ray = new Ray(new Point(6,0,0), new Vector(0,1,0));
-        result = G.findIntersections(ray);
+        result = G.findGeoIntersections(ray);
         assertNull(result, "No intersection point");
         // TC13: Only one geometry intersects
         ray = new Ray(new Point(3,3,0),new Vector(0, -1, 0));
-        result = G.findIntersections(ray);
+        result = G.findGeoIntersections(ray);
         assertEquals(2, result.size(), "Intersects only one geometry");
         // TC14: All geometries intersect
         ray = new Ray(new Point(20,0,1), new Vector(-1, 0, 0));
-        result = G.findIntersections(ray);
+        result = G.findGeoIntersections(ray);
         assertEquals(8, result.size(), "All geometries intersect, wrong num intersections");
 
     }

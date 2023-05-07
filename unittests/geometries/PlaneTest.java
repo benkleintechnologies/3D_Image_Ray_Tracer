@@ -5,7 +5,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import java.util.List;
-
+import geometries.Intersectable.GeoPoint;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
@@ -46,52 +46,52 @@ class PlaneTest {
         assertTrue(isZero(result.dotProduct(new Vector(-1,0,1))) && isZero(result.dotProduct(new Vector(0,-1,1))), "Result is not the normal to the triangle");
     }
 
-    /** Test method for {@link Plane#findIntersections(Ray)}. */
+    /** Test method for {@link Plane#findGeoIntersections(Ray)}. */
     @Test
-    void testFindIntersection(){
+    void testFindGeoIntersection(){
         Plane plane = new Plane(new Point(0,0,0), new Vector(0,0,1)); //Plane is the x-y axis
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray intersects the plane
         Ray ray = new Ray(new Point(0,0,-1), new Vector(1,1,1));
-        List<Point> result = plane.findIntersections(ray);
-        assertEquals(new Point(1,1,0), result.get(0), "Ray intersects the plane");
+        List<GeoPoint> result = plane.findGeoIntersections(ray);
+        assertEquals(new GeoPoint(plane, new Point(1,1,0)), result.get(0), "Ray intersects the plane");
         // TC02: Ray does not intersect the plane
         ray = new Ray(new Point(0,0,-1), new Vector(1,1,0));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray does not intersect the plane");
 
         // =============== Boundary Values Tests ==================
         // **** Group: Parallel Ray
         // TC11: Ray is parallel to the plane and in the plane
         ray = new Ray(new Point(1,0,0), new Vector(1,1,0));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray is parallel to the plane and in the plane");
         // TC12: Ray is parallel to the plane and not in the plane
         ray = new Ray(new Point(0,1,1), new Vector(1,1,0));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray is parallel to the plane and not in the plane");
         // **** Group: Orthogonal Ray
         // TC13: Ray is orthogonal to the plane, starting before the plane
         ray = new Ray(new Point(0,0,-1), new Vector(0,0,1));
-        result = plane.findIntersections(ray);
-        assertEquals(new Point(0,0,0), result.get(0), "Ray is orthogonal to the plane, starting before the plane");
+        result = plane.findGeoIntersections(ray);
+        assertEquals(new GeoPoint(plane, new Point(0,0,0)), result.get(0), "Ray is orthogonal to the plane, starting before the plane");
         // TC14: Ray is orthogonal to the plane, starting in the plane
         ray = new Ray(new Point(0,0,0), new Vector(0,0,1));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray is orthogonal to the plane, starting in the plane");
         // TC15: Ray is orthogonal to the plane, starting after the plane
         ray = new Ray(new Point(0,0,1), new Vector(0,0,1));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray is orthogonal to the plane, starting after the plane");
         // **** Group: Not Parallel or Orthogonal Ray
         // TC16: Ray begins at plane and is neither orthogonal nor parallel to the plane
         ray = new Ray(new Point(0,1,0), new Vector(0,1,1));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray begins at plane and is neither orthogonal nor parallel to the plane");
         // TC17: Ray begins at point Q,the reference point of the plane, and not parallel or orthogonal
         ray = new Ray(new Point(0,0,0), new Vector(0,1,1));
-        result = plane.findIntersections(ray);
+        result = plane.findGeoIntersections(ray);
         assertNull(result, "Ray begins at point Q,the reference point of the plane, and not parallel or orthogonal");
     }
 }
