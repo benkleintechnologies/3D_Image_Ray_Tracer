@@ -176,7 +176,7 @@ public class Camera {
     /**
      * Render the image with the camera object
      */
-    public void renderImage(){
+    public ImageWriter renderImage(){
         if (imageWriter == null || rayTracer == null){
             throw new MissingResourceException("Error: Null value", "Camera", null);
         }
@@ -186,6 +186,7 @@ public class Camera {
                imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
             }
         }
+        return imageWriter;
     }
 
 }
