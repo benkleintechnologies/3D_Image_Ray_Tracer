@@ -5,11 +5,11 @@ import primitives.Double3;
 
 /**
  * Class AmbientLight represents the ambient light in the scene in a 3D space.
+ * Inherits from the abstract class Light.
  * @author Eli Hawk and Binyamin Klein
  * 563385586 & 576708589
  */
-public class AmbientLight {
-    Color intensity;
+public class AmbientLight extends Light {
     public static final AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
 
     /**
@@ -18,22 +18,13 @@ public class AmbientLight {
      * @param attenuation the attenuation factor of the original light
      */
     public AmbientLight(Color color, Double3 attenuation){
-        intensity = color.scale(attenuation);
+        super(color.scale(attenuation));
     }
 
     /**
      * Default constructor which sets the color to be black
      */
     public AmbientLight(){
-        intensity = Color.BLACK;
+        super(Color.BLACK);
     }
-
-    /**
-     * Getter for the color
-     * @return intensity
-     */
-    public Color getIntensity(){
-        return intensity;
-    }
-
 }
