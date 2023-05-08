@@ -29,18 +29,8 @@ public class Ray {
      * @return closest point
      */
     public Point findClosestPoint(List<Point> points) {
-        Point closestPoint = null;
-        double minDistance = Double.MAX_VALUE;
-
-        //loop through points and find closest to head
-        for (Point point : points) {
-            double distance = point.distance(this.point);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestPoint = point;
-            }
-        }
-        return closestPoint;
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
 
     /**
