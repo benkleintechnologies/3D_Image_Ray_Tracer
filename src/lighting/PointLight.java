@@ -32,7 +32,7 @@ public class PointLight extends Light implements LightSource{
      * @param kC one of the attenuation factors.
      * @return the current PointLight object
      */
-    public PointLight setkC(double kC){
+    public PointLight setKc(double kC){
         this.kC = kC;
         return this;
     }
@@ -42,7 +42,7 @@ public class PointLight extends Light implements LightSource{
      * @param kL one of the attenuation factors.
      * @return the current PointLight object
      */
-    public PointLight setkL(double kL){
+    public PointLight setKl(double kL){
         this.kC = kL;
         return this;
     }
@@ -52,7 +52,7 @@ public class PointLight extends Light implements LightSource{
      * @param kQ one of the attenuation factors.
      * @return the current PointLight object
      */
-    public PointLight setkQ(double kQ){
+    public PointLight setKq(double kQ){
         this.kQ = kQ;
         return this;
     }
