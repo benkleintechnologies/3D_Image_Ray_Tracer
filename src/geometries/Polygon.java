@@ -127,7 +127,11 @@ public class Polygon extends Geometry {
 
 
       if(allPositive || allNegative){
-            return intersections;
+         List<GeoPoint> newIntersections = new ArrayList<>();
+         for (GeoPoint geoPoint : intersections) {
+            newIntersections.add(new GeoPoint(this, geoPoint.point));
+         }
+         return newIntersections;
       }
       return null;
    }

@@ -41,7 +41,7 @@ public class Triangle extends Polygon{
             return null;
         }
 
-        GeoPoint intersection = intersections.get(0);
+        GeoPoint intersection = new GeoPoint(this, intersections.get(0).point);
         // Vectors from starting point of the ray to each corner of the triangle
         Vector v1 = vertices.get(0).subtract(ray.getPoint());
         Vector v2 = vertices.get(1).subtract(ray.getPoint());
