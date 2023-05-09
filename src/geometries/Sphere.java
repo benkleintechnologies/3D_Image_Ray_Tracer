@@ -66,7 +66,7 @@ public class Sphere extends RadialGeometry{
         //Calculate vector pointing from the beginning of the ray to the center of the sphere
         Vector u = center.subtract(ray.getPoint());
         //Calculate distance to center of sphere in direction of the ray
-        double tm = u.dotProduct(ray.getDirection());
+        double tm = alignZero(u.dotProduct(ray.getDirection()));
         //Distance from center of sphere to the point reach by continuing the vector above or below center of sphere
         double d = Math.sqrt(Math.abs(u.lengthSquared() - Math.pow(tm,2)));
         //Calulates distance from intersection ppint to middle of sphere on ray
