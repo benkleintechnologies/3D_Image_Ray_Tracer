@@ -144,6 +144,45 @@ public class LightsTests {
          .writeToImage(); //
    }
 
+   private final Point          sphereLightPosition1     = new Point(70, 5, 20);
+   private final Point          sphereLightPosition2     = new Point(0, 40, 5);
+   private final Point          trianglesLightPosition1  = new Point(30, 10, -100);
+   private final Point          trianglesLightPosition2  = new Point(-50, -30, -75);
+
+   /** Produce a picture of a sphere lighted by all lights */
+   @Test
+    public void sphereAllLights() {
+        scene1.geometries.add(sphere);
+        scene1.lights.add(new DirectionalLight(sphereLightColor, new Vector(3, 1, -0.5)));
+        scene1.lights.add(new PointLight(sphereLightColor, sphereLightPosition1)
+            .setKl(0.002).setKq(0.001));
+        scene1.lights.add(new SpotLight(sphereLightColor, sphereLightPosition2, new Vector(2, -1, -0.5))
+            .setKl(0.001).setKq(0.0001));
+
+        ImageWriter imageWriter = new ImageWriter("lightSphereAllLights", 500, 500);
+        camera1.setImageWriter(imageWriter) //
+            .setRayTracer(new RayTracerBasic(scene1)) //
+            .renderImage() //
+            .writeToImage(); //
+    }
+
+   /** Produce a picture of two triangles lighted by all lights */
+   @Test
+    public void trianglesAllLights() {
+        scene2.geometries.add(triangle1, triangle2);
+        scene2.lights.add(new DirectionalLight(trianglesLightColor, new Vector(-1, -2, -1)));
+        scene2.lights.add(new PointLight(trianglesLightColor, trianglesLightPosition1)
+            .setKl(0.00002).setKq(0.001));
+        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition2, new Vector(-2, -1, -1))
+            .setKl(0.0004).setKq(0.0003));
+
+        ImageWriter imageWriter = new ImageWriter("lightTrianglesAllLights", 500, 500);
+        camera2.setImageWriter(imageWriter) //
+            .setRayTracer(new RayTracerBasic(scene2)) //
+            .renderImage() //
+            .writeToImage(); //
+    }
+
    /** Produce a picture of a sphere lighted by a narrow spotlight */
 /*   @Test
    public void sphereSpotSharp() {
