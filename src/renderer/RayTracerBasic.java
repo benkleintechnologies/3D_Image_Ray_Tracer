@@ -1,9 +1,6 @@
 package renderer;
 
-import geometries.Triangle;
 import lighting.LightSource;
-import lighting.PointLight;
-import lighting.SpotLight;
 import primitives.*;
 import scene.Scene;
 
@@ -18,8 +15,6 @@ import static primitives.Util.alignZero;
  * 563385586 & 576708589
  */
 public class RayTracerBasic extends RayTracerBase {
-
-    private static final double EPS = 0.1;
 
     /**
      * Constructor for RayTracerBase
@@ -83,6 +78,12 @@ public class RayTracerBasic extends RayTracerBase {
         return material.kS.scale(Math.pow(minusVR, material.nShininess));
     }
 
+    /**
+     * Function to calculate the local effects of the light on the geometry
+     * @param gp the point on the geometry
+     * @param ray the ray that intersects the point
+     * @return the color of the point
+     */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission(); //iE
         Vector v = ray.getDirection();

@@ -43,7 +43,7 @@ public class PointLight extends Light implements LightSource{
      * @return the current PointLight object
      */
     public PointLight setKl(double kL){
-        this.kC = kL;
+        this.kL = kL;
         return this;
     }
 
@@ -69,7 +69,7 @@ public class PointLight extends Light implements LightSource{
 
     @Override
     public Vector getL(Point p) {
-        return p.subtract(position);
+        return p.subtract(position).normalize();
     }
 
     @Override
