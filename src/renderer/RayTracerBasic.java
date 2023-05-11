@@ -15,7 +15,7 @@ import static primitives.Util.alignZero;
  * 563385586 & 576708589
  */
 public class RayTracerBasic extends RayTracerBase {
-
+    private static final double DELTA = 0.1;
     /**
      * Constructor for RayTracerBase
      * @param scene the scene
@@ -24,12 +24,21 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
-    /*
+
+    /**
+     * Checks if a point is unshaded
+     * @param gp geoPoint to check if it is shaded
+     * @param light the light source we are checking it with
+     * @param l vector going from the light source to the point
+     * @param n
+     * @param nv
+     * @return
+     */
     private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
 
         Vector lightDirection = l.scale(-1); // from point to light source
 
-        Vector epsVector = n.scale(EPS);
+        Vector epsVector = n.scale(DELTA);
         Point point = gp.point.add(epsVector);
 
         Ray lightRay = new Ray(gp.point, lightDirection);
@@ -47,7 +56,6 @@ public class RayTracerBasic extends RayTracerBase {
 
         return true;
     }
-     */
 
     /**
      * Function to calculate the diffusive component of the color
@@ -95,8 +103,10 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
+                if (unshaded(gp, lightSource, l, n, nl)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
         return color;
