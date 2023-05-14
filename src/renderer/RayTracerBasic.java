@@ -179,6 +179,10 @@ public class RayTracerBasic extends RayTracerBase {
         return 1 == level ? color : color.add(calcGlobalEffects(intersection, ray, level, k));
     }
 
+    private Color calcColor(GeoPoint intersection, Ray ray){
+        return scene.ambientLight.getIntensity().add(calcColor(intersection, ray, MAX_CALC_COLOR_LEVEL, new Double3(MIN_CALC_COLOR_K)));
+    }
+
     @Override
     public Color traceRay(Ray ray) {
         GeoPoint closestPoint = findClosestIntersection(ray);
