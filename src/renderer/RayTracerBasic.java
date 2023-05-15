@@ -42,14 +42,14 @@ public class RayTracerBasic extends RayTracerBase {
 
         Ray lightRay = new Ray(gp.point, lightDirection, n);
 
-        List<Point> intersections = scene.geometries.findIntersections(lightRay);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
         if (intersections == null) return true;
 
-        //if there are points in the intersections list that are closer to the point than light source – return false
+        //if there are points in the intersections list that are closer to the point than light source (and kT==0) – return false
         //otherwise – return true
         double lightDistance = light.getDistance(gp.point);
-        for (Point p : intersections) {
-            if (alignZero(p.distance(gp.point) - lightDistance) <= 0)
+        for (GeoPoint p : intersections) {
+            if (alignZero(p.point.distance(gp.point) - lightDistance) <= 0 && p.geometry.getMaterial().kT.equals(Double3.ZERO))
                 return false;
         }
 
@@ -83,19 +83,24 @@ public class RayTracerBasic extends RayTracerBase {
         double n2 = 1;
         //Cosine of the angle between the normal and the vector from the camera to the point
         double cosThetaI = v.dotProduct(n) / (v.length()*n.length());
-        //Sin of the angle between the normal and the vector from the camera to the point
-        double sinThetaI = Math.sqrt(1 - cosThetaI*cosThetaI);
-        //Sin of the angle between the normal and the refracted ray
-        double sinThetaR = (n1/n2)*sinThetaI;
-        //Cosine of the angle between the normal and the refracted ray
-        double cosThetaR = Math.sqrt(1 - sinThetaR*sinThetaR);
+
+        // Check for total internal reflection
+        if (cosThetaI > 1 / n2)
+            return null;
+
+        double sinThetaI = Math.sqrt(1 - cosThetaI * cosThetaI);
+        double sinThetaR = (n1/n2) * sinThetaI;
+        double cosThetaR = Math.sqrt(1 - sinThetaR * sinThetaR);
         //𝒓 = (𝐜𝐨𝐬𝜽i −𝒄𝒐𝒔𝜽r)∙𝒏 − 𝒗
         if (isZero(cosThetaI - cosThetaR)){
             return new Ray(gp.point, v, n);
         }
-        Vector r = n.scale(cosThetaI-cosThetaR).scale(n1/n2).subtract(v.scale(n1/n2));
+        //Vector r = n.scale(cosThetaI-cosThetaR).scale(n1/n2).subtract(v.scale(n1/n2));
+        Vector r = v.scale(n1/n2).subtract(n.scale(cosThetaR - cosThetaI));
         //𝒓𝒂𝒚=𝒑𝒐𝒊𝒏𝒕+𝒌∙𝒓
         return new Ray(gp.point, r, n);
+        //return new Ray(gp.point, v, n);
+        //TODO:Fix issue with refracted ray
     }
 
     /**
@@ -179,6 +184,12 @@ public class RayTracerBasic extends RayTracerBase {
         return 1 == level ? color : color.add(calcGlobalEffects(intersection, ray, level, k));
     }
 
+    /**
+     * Calculate the color of the pixel
+     * @param intersection the point that we wish to get its color
+     * @param ray the ray that intersects the point
+     * @return the color of the point
+     */
     private Color calcColor(GeoPoint intersection, Ray ray){
         return scene.ambientLight.getIntensity().add(calcColor(intersection, ray, MAX_CALC_COLOR_LEVEL, new Double3(MIN_CALC_COLOR_K)));
     }
