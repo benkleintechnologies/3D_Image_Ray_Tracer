@@ -18,6 +18,8 @@ import static primitives.Util.isZero;
 public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
+    private static final double INITIAL_K = 1.0;
+
 
     /**
      * Constructor for RayTracerBase
@@ -33,7 +35,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @param light the light source we are checking it with
      * @param l vector going from the light source to the point
      * @param n the normal vector
-     * @param nv the dot product of the normal and the vector from the camera to the point
      * @return true if the point is unshaded, false otherwise
      */
     private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n) {
@@ -58,7 +59,6 @@ public class RayTracerBasic extends RayTracerBase {
 
 
     private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n){
-
         Vector lightDirection = l.scale(-1); // from point to light source
 
         Ray lightRay = new Ray(gp.point, lightDirection, n);
@@ -71,13 +71,12 @@ public class RayTracerBasic extends RayTracerBase {
         double lightDistance = light.getDistance(gp.point);
         for (GeoPoint p : intersections) {
             if (alignZero(p.point.distance(gp.point) - lightDistance) <= 0){
-                Double3 product = ktr.product(p.geometry.getMaterial().kT);
-                if (isZero(product.getD1())){
+                ktr = ktr.product(p.geometry.getMaterial().kT);
+                if (ktr.getD1() < MIN_CALC_COLOR_K){
                         return Double3.ZERO;
                 }
             }
         }
-
         return ktr;
     }
 
@@ -173,7 +172,6 @@ public class RayTracerBasic extends RayTracerBase {
                 Double3 ktr = transparency(gp, lightSource, l, n);
                 if (ktr.product(k).greaterThan(MIN_CALC_COLOR_K)) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
-
                     color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
                 }
             }
@@ -217,7 +215,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the color of the point
      */
     private Color calcColor(GeoPoint intersection, Ray ray){
-        return scene.ambientLight.getIntensity().add(calcColor(intersection, ray, MAX_CALC_COLOR_LEVEL, new Double3(MIN_CALC_COLOR_K)));
+        return scene.ambientLight.getIntensity().add(calcColor(intersection, ray, MAX_CALC_COLOR_LEVEL, new Double3(INITIAL_K)));
     }
 
     @Override
