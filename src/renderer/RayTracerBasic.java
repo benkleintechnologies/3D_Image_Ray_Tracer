@@ -78,7 +78,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the refracted ray
      */
     private Ray findRefractedRay(GeoPoint gp, Vector v, Vector n) {
-        //Refraction indexes
+        /*//Refraction indexes
         double n1 = 1;
         double n2 = 1;
         //Cosine of the angle between the normal and the vector from the camera to the point
@@ -99,7 +99,8 @@ public class RayTracerBasic extends RayTracerBase {
         Vector r = v.scale(n1/n2).subtract(n.scale(cosThetaR - cosThetaI));
         //𝒓𝒂𝒚=𝒑𝒐𝒊𝒏𝒕+𝒌∙𝒓
         return new Ray(gp.point, r, n);
-        //return new Ray(gp.point, v, n);
+        //return new Ray(gp.point, v, n);*/
+        return new Ray(gp.point, v, n);
         //TODO:Fix issue with refracted ray
     }
 
