@@ -120,10 +120,6 @@ public class Double3 {
    public boolean greaterThan(double other) {
       return d1 >= other && d2 >= other && d3 >= other;
    }
-
-   public double getD1() {
-      return d1;
-   }
 }
 
 
