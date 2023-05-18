@@ -36,7 +36,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param nv the dot product of the normal and the vector from the camera to the point
      * @return true if the point is unshaded, false otherwise
      */
-    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
+    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n) {
 
         Vector lightDirection = l.scale(-1); // from point to light source
 
@@ -54,6 +54,31 @@ public class RayTracerBasic extends RayTracerBase {
         }
 
         return true;
+    }
+
+
+    private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n){
+
+        Vector lightDirection = l.scale(-1); // from point to light source
+
+        Ray lightRay = new Ray(gp.point, lightDirection, n);
+
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        if (intersections == null) return Double3.ONE;
+        Double3 ktr = Double3.ONE;
+        //if there are points in the intersections list that are closer to the point than light source (and kT==0) – return false
+        //otherwise – return true
+        double lightDistance = light.getDistance(gp.point);
+        for (GeoPoint p : intersections) {
+            if (alignZero(p.point.distance(gp.point) - lightDistance) <= 0){
+                Double3 product = ktr.product(p.geometry.getMaterial().kT);
+                if (isZero(product.getD1())){
+                        return Double3.ZERO;
+                }
+            }
+        }
+
+        return ktr;
     }
 
     /**
@@ -144,10 +169,10 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                if (unshaded(gp, lightSource, l, n, nl)) {
-                //Double3 ktr = new Double3(transparency(l, n, gp, nv));
-                //if (new Double3(MIN_CALC_COLOR_K).lowerThan(k.product(ktr))) {
-                    Color iL = lightSource.getIntensity(gp.point);//.scale(ktr);
+                Double3 ktr = transparency(gp, lightSource, l, n);
+                if (ktr.product(k).greaterThan(MIN_CALC_COLOR_K)) {
+                    Color iL = lightSource.getIntensity(gp.point).scale(ktr);
+
                     color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
                 }
             }
