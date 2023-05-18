@@ -72,7 +72,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (GeoPoint p : intersections) {
             if (alignZero(p.point.distance(gp.point) - lightDistance) <= 0){
                 ktr = ktr.product(p.geometry.getMaterial().kT);
-                if (ktr.getD1() < MIN_CALC_COLOR_K){
+                if (ktr.lowerThan(MIN_CALC_COLOR_K)){
                         return Double3.ZERO;
                 }
             }
