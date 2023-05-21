@@ -146,7 +146,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
         Color color = gp.geometry.getEmission(); //iE
-        Vector v = ray.getDirection();
+        Vector v = ray.getDirection().normalize();
         Vector n = gp.geometry.getNormal(gp.point);
         double nv = alignZero(n.dotProduct(v));
         if (isZero(nv)) return color;
@@ -193,9 +193,9 @@ public class RayTracerBasic extends RayTracerBase {
         Double3 kkx = k.product(kx);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
-        if (gp == null) return scene.background.scale(kx);
+        if (gp == null) return scene.background;//.scale(kx);
         level--;
-        return isZero(gp.geometry.getNormal(gp.point).dotProduct(ray.getDirection())) ? Color.BLACK : calcColor(gp, ray, level, kkx);
+        return isZero(gp.geometry.getNormal(gp.point).dotProduct(ray.getDirection())) ? Color.BLACK : calcColor(gp, ray, level, kkx).scale(kx);
     }
 
     /**
