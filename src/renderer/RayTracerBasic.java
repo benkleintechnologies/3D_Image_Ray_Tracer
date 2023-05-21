@@ -7,8 +7,7 @@ import scene.Scene;
 import java.util.List;
 import geometries.Intersectable.GeoPoint;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
+import static primitives.Util.*;
 
 /**
  * Class RayTracerBasic which inherits from RayTracerBase
@@ -154,7 +153,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0) { // sign(nl) == sign(nv)
+            if (checkSign(nl, nv)) { // sign(nl) == sign(nv)
                 Double3 ktr = transparency(gp, lightSource, l, n);
                 if (ktr.product(k).greaterThan(MIN_CALC_COLOR_K)) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
