@@ -128,7 +128,7 @@ public class ReflectionRefractionTests {
                       .setEmission(new Color(200, 200, 200))
                       .setMaterial(new Material().setKd(0.5).setKs(0.3).setShininess(30)),
 
-              // Roof (Polygon)
+              // Roof (Triangle)
               new Triangle(
                       new Point(-1000, 1000, -2000),
                       new Point(0, 1500, -2000),
@@ -187,10 +187,15 @@ public class ReflectionRefractionTests {
                       .setEmission(new Color(0, 100, 100))
                       .setMaterial(new Material().setKd(0.7).setKs(0.5).setShininess(20)),
 
-              // Chimney (Cylinder)
-              new Cylinder(new Ray(new Point(500, 1500, -2001), new Vector(0, 1, 0)), 100d, 500d)
-                      .setEmission(new Color(100, 100, 100))
-                      .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)),
+              // Chimney (Polygon)
+              new Polygon(
+                      new Point(500, 1000, -2001),
+                      new Point(500, 1400, -2001),
+                      new Point(800, 1400, -2001),
+                      new Point(800, 1000, -2001)
+              )
+                      .setEmission(new Color(0, 0, 0))
+                      .setMaterial(new Material().setKd(0.1).setKs(0.1).setShininess(50)),
 
               // Front lawn (Polygon)
               new Polygon(
@@ -205,27 +210,27 @@ public class ReflectionRefractionTests {
               // Cloud 1 (Spheres)
               new Sphere(200d, new Point(-1500, 1000, -1500))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
               new Sphere(200d, new Point(-1200, 1200, -1500))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
               new Sphere(150d, new Point(-1300, 1100, -1500))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
               new Sphere(250d, new Point(-1300, 1000, -1500))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
 
               // Cloud 2 (Spheres)
               new Sphere(150d, new Point(1000, 1250, -1000))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
               new Sphere(200d, new Point(1300, 1100, -1000))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10)),
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0)),
               new Sphere(250d, new Point(1200, 1200, -1000))
                       .setEmission(new Color(255, 255, 255))
-                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10))
+                      .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(10).setKt(1.0))
 
       );
 
