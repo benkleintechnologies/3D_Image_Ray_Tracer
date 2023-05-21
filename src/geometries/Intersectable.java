@@ -3,7 +3,10 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * Intersectable Interface
@@ -56,7 +59,6 @@ public abstract class Intersectable {
         return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
     }
 
-
     /**
      * Find the points of intersection of a ray with the geometry
      * @param ray a ray which is intersecting the geometry
@@ -73,5 +75,24 @@ public abstract class Intersectable {
         return findGeoIntersectionsHelper(ray);
     }
 
+    /**
+     * Find the points of intersection of a ray with the geometry closer than a certain distance from the Ray
+     * @param ray which is intersecting the geometry
+     * @param maxDistance the maximum distance of a point to return
+     * @return the points of intersection of ray with this geometry within the distance
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance){
+        List<GeoPoint> pointList = findGeoIntersectionsHelper(ray);
+        List<GeoPoint> closePointsList = new LinkedList<>();
 
+        if (pointList == null) return closePointsList;
+
+        for (GeoPoint p: pointList){
+            if (alignZero(p.point.distance(ray.getPoint()) - maxDistance) <= 0){
+                closePointsList.add(p);
+            }
+        }
+
+        return closePointsList;
+    }
 }
