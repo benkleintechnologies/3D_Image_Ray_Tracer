@@ -21,6 +21,8 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
     //The starting transparency factor
     private static final double INITIAL_K = 1.0;
+    //Boolean to determine whether to use adaptive supersampling
+    private boolean ADAPTIVE_SS = true;
 
     /**
      * Constructor for RayTracerBase
@@ -176,7 +178,16 @@ public class RayTracerBasic extends RayTracerBase {
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        return calcColorGLobalEffect(findReflectedRay(gp, v, n), level, k, material.kR).add(calcColorGLobalEffect(findRefractedRay(gp, v, n), level, k, material.kT));
+        if(ADAPTIVE_SS == false)
+            return calcColorGLobalEffect(findReflectedRay(gp, v, n), level, k, material.kR).add(calcColorGLobalEffect(findRefractedRay(gp, v, n), level, k, material.kT));
+        //Super sampling is on. Perform calculations for from glossy and diffusion
+        Ray reflectedRay = findReflectedRay(gp, v, n);
+        //Need to figure out target sizes
+        // double reflectedTargetSize = material.kR;
+        // double refractedTargetSize = material.kT;
+        Ray refractedRay = findRefractedRay(gp, v, n);
+        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(10)), 10, reflectedTargetSize);
+        return null;
     }
 
     /**
@@ -216,6 +227,14 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint intersection, Ray ray){
         return scene.ambientLight.getIntensity().add(calcColor(intersection, ray, MAX_CALC_COLOR_LEVEL, new Double3(INITIAL_K)));
+    }
+
+    /**
+     * Setter for the adaptive super sampling
+     * @param ADAPTIVE_SS the new value of the adaptive super sampling
+     */
+    public void setADAPTIVE_SS(boolean ADAPTIVE_SS) {
+        this.ADAPTIVE_SS = ADAPTIVE_SS;
     }
 
     @Override
