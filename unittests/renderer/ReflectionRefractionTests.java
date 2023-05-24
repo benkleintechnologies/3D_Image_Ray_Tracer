@@ -244,7 +244,7 @@ public class ReflectionRefractionTests {
               new SpotLight(new Color(1000, 1000, 0), new Point(2000, 2000, 0), new Vector(-.01, -.01, -1))
                       .setKl(0.00000001).setKq(0.00000005));
 
-      ImageWriter imageWriter = new ImageWriter("impressivePhoto", 500, 500);
+      ImageWriter imageWriter = new ImageWriter("impressivePhoto", 1000, 1000);
       camera.setImageWriter(imageWriter)
               .setRayTracer(new RayTracerBasic(scene))
               .renderImage()
