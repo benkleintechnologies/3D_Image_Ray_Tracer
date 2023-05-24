@@ -111,6 +111,14 @@ public class Vector extends Point {
         return new Vector(term1,term2,term3);
     }
 
+    /**
+     * Creates a vector orthogonal to the vector
+     * @return the vector
+     */
+    public Vector getNormal(){
+        return new Vector(-xyz.d2,xyz.d1,0);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
