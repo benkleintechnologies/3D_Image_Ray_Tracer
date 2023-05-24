@@ -1,7 +1,11 @@
 package primitives;
 
+import java.util.LinkedList;
 import java.util.List;
 import geometries.Intersectable.GeoPoint;
+import lighting.LightSource;
+
+import static primitives.Util.alignZero;
 
 /**
  * Class Ray is the basic class representing a ray starting at a point in Cartesian
@@ -91,6 +95,49 @@ public class Ray {
             }
         }
         return closestPoint;
+    }
+
+
+    /**
+     * Create a beam of rays from the original ray
+     * @param centerPoint center point of the beam
+     * @param numRays number of rays to create
+     * @param radius radius of the circle
+     * @return list of rays
+     */
+    public List<Ray> createRaysBeam(Point centerPoint, int numRays, double radius){
+        List<Ray> rayList = new LinkedList<Ray>();
+        rayList.add(this);                          // adding the original ray
+        List<Point> pointList = createRandomPoints(centerPoint, radius, numRays);
+        for (Point p : pointList)             //from every point in the point list we make a ray
+            rayList.add(new Ray(point, p.subtract(point).normalize()));
+        return rayList;
+    }
+
+    /**
+     * Creates a list of random points in a circle around the center point on the plane defined by the direction vector
+     * @param centerPoint center point of circle
+     * @param radius radius of circle
+     * @param numRays number of rays to create
+     * @return list of random points
+     */
+    private List<Point> createRandomPoints(Point centerPoint, double radius, int numRays){
+        List<Point> randomPoints = new LinkedList<Point>();
+        Vector vX = direction.normalize().getNormal(), vY = vX.crossProduct(direction.normalize());
+        double x, y;
+        for (int i = 0; i < numRays; i++) {
+            x = Math.random();
+            y = Math.sqrt(1 - x * x);
+            Point p = centerPoint;
+            //get random number between -radius and radius
+            double d = Math.random() * radius * 2 - radius;
+            x = alignZero(x * d);
+            y = alignZero(y * d);
+            if (x != 0) p = p.add(vX.scale(x));
+            if (y != 0) p = p.add(vY.scale(y));
+            randomPoints.add(p);
+        }
+        return randomPoints;
     }
 
     @Override
