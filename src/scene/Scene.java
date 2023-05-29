@@ -70,4 +70,22 @@ public class Scene {
         this.lights = lights;
         return this;
     }
+
+    /**
+     * Setter for camera
+     * @param camera of the scene
+     * @return this scene object
+     */
+    public Scene setCamera(Camera camera){
+        this.camera = camera;
+        return this;
+    }
+
+    /**
+     * Getter for camera
+     * @return camera
+     */
+    public Camera getCamera(){
+        return this.camera;
+    }
 }
