@@ -16,9 +16,9 @@ import static primitives.Util.*;
  */
 public class RayTracerBasic extends RayTracerBase {
     //Maximal level of recursion for calculating the color
-    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final int MAX_CALC_COLOR_LEVEL = 5;
     //Minimal transparency that's considered significant to be calculating
-    private static final double MIN_CALC_COLOR_K = 0.001;
+    private static final double MIN_CALC_COLOR_K = 0.1;
     //The starting transparency factor
     private static final double INITIAL_K = 1.0;
     //Boolean to determine whether to use adaptive supersampling
@@ -178,16 +178,31 @@ public class RayTracerBasic extends RayTracerBase {
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        if(ADAPTIVE_SS == false)
-            return calcColorGLobalEffect(findReflectedRay(gp, v, n), level, k, material.kR).add(calcColorGLobalEffect(findRefractedRay(gp, v, n), level, k, material.kT));
-        //Super sampling is on. Perform calculations for from glossy and diffusion
         Ray reflectedRay = findReflectedRay(gp, v, n);
-        //Need to figure out target sizes
-        // double reflectedTargetSize = material.kR;
-        // double refractedTargetSize = material.kT;
         Ray refractedRay = findRefractedRay(gp, v, n);
-        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(10)), 10, reflectedTargetSize);
-        return null;
+        if(ADAPTIVE_SS == false)
+            return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
+        //Super sampling is on. Perform calculations for from glossy and diffusion
+        //Find target sizes for reflected and refracted rays
+        double reflectedTargetSize = material.kR.hashCode() * gp.point.distance(scene.getCamera().getP0()) * 0.0001;
+        double refractedTargetSize = (gp.point.distance(scene.getCamera().getP0())) / material.kT.hashCode();
+        //Calculate reflected and refracted ray beams
+        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(10)), 2, reflectedTargetSize);
+        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(10)), 2, refractedTargetSize);
+
+        //Calculate the color of the average of reflected rays
+        for (Ray r : reflectedRays) {
+            color = color.add(calcColorGLobalEffect(r, level, k, material.kR));
+        }
+        color.scale(1.0 / reflectedRays.size());
+
+        //calculate the color of the average of refracted rays
+        for (Ray r : refractedRays) {
+            color = color.add(calcColorGLobalEffect(r, level, k, material.kT));
+        }
+        color.scale(1.0 / refractedRays.size());
+
+        return color;
     }
 
     /**
@@ -232,9 +247,11 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * Setter for the adaptive super sampling
      * @param ADAPTIVE_SS the new value of the adaptive super sampling
+     * @return the ray tracer
      */
-    public void setADAPTIVE_SS(boolean ADAPTIVE_SS) {
+    public RayTracerBase setADAPTIVE_SS(boolean ADAPTIVE_SS) {
         this.ADAPTIVE_SS = ADAPTIVE_SS;
+        return this;
     }
 
     @Override
