@@ -28,6 +28,7 @@ public class ReflectionRefractionTests {
    public void twoSpheres() {
       Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
          .setVPSize(150, 150).setVPDistance(1000);
+      scene.setCamera(camera);
 
       scene.geometries.add( //
                            new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(BLUE)) //
@@ -39,7 +40,7 @@ public class ReflectionRefractionTests {
                           .setKl(0.0004).setKq(0.0000006));
 
       camera.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)) //
-         .setRayTracer(new RayTracerBasic(scene)) //
+         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -49,6 +50,7 @@ public class ReflectionRefractionTests {
    public void twoSpheresOnMirrors() {
       Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
          .setVPSize(2500, 2500).setVPDistance(10000); //
+      scene.setCamera(camera);
 
       scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.1)));
 
@@ -72,7 +74,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored", 500, 500);
       camera.setImageWriter(imageWriter) //
-         .setRayTracer(new RayTracerBasic(scene)) //
+         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -84,6 +86,7 @@ public class ReflectionRefractionTests {
    public void trianglesTransparentSphere() {
       Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
          .setVPSize(200, 200).setVPDistance(1000);
+      scene.setCamera(camera);
 
       scene.setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
 
@@ -101,7 +104,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("refractionShadow", 600, 600);
       camera.setImageWriter(imageWriter) //
-         .setRayTracer(new RayTracerBasic(scene)) //
+         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -110,6 +113,7 @@ public class ReflectionRefractionTests {
    public void impressivePhoto() {
       Camera camera = new Camera(new Point(0, 0, 5000), new Vector(0, 0, -1), new Vector(0, 1, 0))
               .setVPSize(2500, 2500).setVPDistance(5000);
+      scene.setCamera(camera);
 
       // Set ambient light
       scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.1)));
@@ -244,9 +248,9 @@ public class ReflectionRefractionTests {
               new SpotLight(new Color(1000, 1000, 0), new Point(2000, 2000, 0), new Vector(-.01, -.01, -1))
                       .setKl(0.00000001).setKq(0.00000005));
 
-      ImageWriter imageWriter = new ImageWriter("impressivePhoto", 1000, 1000);
+      ImageWriter imageWriter = new ImageWriter("impressivePhoto", 500, 500);
       camera.setImageWriter(imageWriter)
-              .setRayTracer(new RayTracerBasic(scene))
+              .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true))
               .renderImage()
               .writeToImage();
    }
