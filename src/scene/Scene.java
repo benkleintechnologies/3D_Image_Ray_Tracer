@@ -4,6 +4,7 @@ import lighting.AmbientLight;
 import geometries.Geometries;
 import primitives.Color;
 import lighting.LightSource;
+import renderer.Camera;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Scene {
     public AmbientLight ambientLight = new AmbientLight();
     public Geometries geometries;
     public List<LightSource> lights = new LinkedList<LightSource>();
+    private Camera camera;
 
     /**
      * Constructor that receives the scene's name and initializes an empty collection of geometries
