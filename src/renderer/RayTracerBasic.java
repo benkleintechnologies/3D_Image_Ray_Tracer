@@ -197,10 +197,14 @@ public class RayTracerBasic extends RayTracerBase {
         color.scale(1.0 / reflectedRays.size());
 
         //calculate the color of the average of refracted rays
+        Color refractedColor= Color.BLACK;
         for (Ray r : refractedRays) {
-            color = color.add(calcColorGLobalEffect(r, level, k, material.kT));
+            refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT));
         }
-        color.scale(1.0 / refractedRays.size());
+        refractedColor.scale(1.0 / refractedRays.size());
+
+        //Add Reflected and refracted colors
+        color = color.add(refractedColor);
 
         return color;
     }
