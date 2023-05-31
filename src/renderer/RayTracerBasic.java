@@ -184,8 +184,8 @@ public class RayTracerBasic extends RayTracerBase {
             return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
         //Super sampling is on. Perform calculations for from glossy and diffusion
         //Find target sizes for reflected and refracted rays
-        double reflectedTargetSize = material.kR.hashCode() * gp.point.distance(scene.getCamera().getP0()) * 0.0001;
-        double refractedTargetSize = (gp.point.distance(scene.getCamera().getP0())) / material.kT.hashCode();
+        double reflectedTargetSize = 1/45;//material.kR.hashCode() * gp.point.distance(scene.getCamera().getP0()) * 0.0001;
+        double refractedTargetSize = 1/2;//(gp.point.distance(scene.getCamera().getP0())) / material.kT.hashCode();
         //Calculate reflected and refracted ray beams
         List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(10)), 2, reflectedTargetSize);
         List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(10)), 2, refractedTargetSize);
