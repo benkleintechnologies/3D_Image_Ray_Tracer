@@ -16,6 +16,11 @@ public class Material {
     public Double3 kR = new Double3(0);
     //nShininess - shininess level
     public int nShininess = 0;
+    //nGlossiness - glossiness level
+    public double nGlossiness = 0;
+    //nBlur - diffusive level
+    public double nBlur = 0;
+
 
     /**
      * Setter for kD which receives Double3
@@ -104,6 +109,26 @@ public class Material {
      */
     public Material setShininess(int nShininess){
         this.nShininess = nShininess;
+        return this;
+    }
+
+    /**
+     * Setter for nGlossiness
+     * @param nGlossiness glossiness level
+     * @return this material object
+     */
+    public Material setGlossiness(double nGlossiness) {
+        this.nGlossiness = nGlossiness;
+        return this;
+    }
+
+    /**
+     * Setter for nBlur
+     * @param nBlur diffusive level
+     * @return this material object
+     */
+    public Material setBlur(double nBlur) {
+        this.nBlur = nBlur;
         return this;
     }
 }
