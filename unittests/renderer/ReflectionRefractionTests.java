@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import lighting.AmbientLight;
 import lighting.SpotLight;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
 /** Tests for reflection and transparency functionality, test for partial
@@ -40,7 +39,7 @@ public class ReflectionRefractionTests {
                           .setKl(0.0004).setKq(0.0000006));
 
       camera.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)) //
-         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
+         .setRayTracer(new RayTracerBasic(scene).setSS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -57,13 +56,13 @@ public class ReflectionRefractionTests {
       scene.geometries.add( //
                            new Sphere(400d, new Point(-950, -900, -1000)).setEmission(new Color(0, 50, 100)) //
                               .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
-                                 .setKt(new Double3(0.5, 0, 0))),
+                                 .setKt(new Double3(0.5, 0, 0)).setBlur(1)),
                            new Sphere(200d, new Point(-950, -900, -1000)).setEmission(new Color(100, 50, 20)) //
                               .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)),
                            new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
                                         new Point(670, 670, 3000)) //
                               .setEmission(new Color(20, 20, 20)) //
-                              .setMaterial(new Material().setKr(1.0)),
+                              .setMaterial(new Material().setKr(1.0).setGlossiness(0.00005)),
                            new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
                                         new Point(-1500, -1500, -2000)) //
                               .setEmission(new Color(20, 20, 20)) //
@@ -74,7 +73,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored", 500, 500);
       camera.setImageWriter(imageWriter) //
-         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
+         .setRayTracer(new RayTracerBasic(scene).setSS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -104,7 +103,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("refractionShadow", 600, 600);
       camera.setImageWriter(imageWriter) //
-         .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true)) //
+         .setRayTracer(new RayTracerBasic(scene).setSS(true)) //
          .renderImage() //
          .writeToImage();
    }
@@ -250,7 +249,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("impressivePhoto", 500, 500);
       camera.setImageWriter(imageWriter)
-              .setRayTracer(new RayTracerBasic(scene).setADAPTIVE_SS(true))
+              .setRayTracer(new RayTracerBasic(scene).setSS(true))
               .renderImage()
               .writeToImage();
    }
