@@ -19,7 +19,7 @@ public class Material {
     //nGlossiness - glossiness level
     public double nGlossiness = 0;
     //nBlur - diffusive level
-    public double nBlur = 0;
+    public double nBlur = 1;
 
 
     /**
