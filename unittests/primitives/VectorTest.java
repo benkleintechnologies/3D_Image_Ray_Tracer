@@ -245,15 +245,15 @@ class VectorTest {
 
         // TC01: Normalize a vector with all positive values
         Vector v = new Vector(1,1,1);
-        assertEquals(new Vector(0.57735026919, 0.57735026919, 0.57735026919), v.normalize(), "Error: normalizing a positive vector");
+        assertEquals(new Vector(0.5773502691896258,0.5773502691896258,0.5773502691896258), v.normalize(), "Error: normalizing a positive vector");
 
         // TC02: Normalize a vector with all negative values
         v = new Vector(-1, -1, -1);
-        assertEquals(new Vector(-0.57735026919, -0.57735026919, -0.57735026919), v.normalize(), "Error: normalizing a negative vector");
+        assertEquals(new Vector(-0.5773502691896258,-0.5773502691896258,-0.5773502691896258), v.normalize(), "Error: normalizing a negative vector");
 
         // TC03: Normalize a vector with a length less than 1
         v = new Vector(.1, .1, .1);
-        assertEquals(new Vector(0.57735026919, 0.57735026919, 0.57735026919), v.normalize(), "Error: normalizing a vector with length less than 1");
+        assertEquals(new Vector(0.5773502691896257,0.5773502691896257,0.5773502691896257), v.normalize(), "Error: normalizing a vector with length less than 1");
         // =============== Boundary Values Tests ==================
         // Don't think we need any boundary cases here, we'll check
     }
