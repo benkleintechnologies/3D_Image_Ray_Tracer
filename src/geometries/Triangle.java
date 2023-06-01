@@ -35,8 +35,8 @@ public class Triangle extends Polygon{
     //getNormal is inherited from Polygon
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray, maxDistance);
         if (isNull(intersections)){
             return null;
         }

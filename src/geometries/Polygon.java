@@ -85,8 +85,8 @@ public class Polygon extends Geometry {
    public Vector getNormal(Point point) { return plane.getNormal(); }
 
    @Override
-   public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-      List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
+   public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+      List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray, maxDistance);
       if (isNull(intersections)){
          return null;
       }
@@ -96,7 +96,6 @@ public class Polygon extends Geometry {
       for(Point p : vertices){
          vectors.add(p.subtract(ray.getPoint()));
       }
-
 
       // Normals to the plane extended from the edges of the triangle
       List<Vector> normals = new ArrayList<>();

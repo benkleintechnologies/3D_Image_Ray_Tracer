@@ -57,7 +57,7 @@ public class Sphere extends RadialGeometry{
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         //Ray starts at center, so intersection is on the ray at the radius
         if (center.equals(ray.getPoint())){
             return List.of(new GeoPoint(this, ray.getPoint(radius)));
@@ -69,7 +69,7 @@ public class Sphere extends RadialGeometry{
         double tm = alignZero(u.dotProduct(ray.getDirection()));
         //Distance from center of sphere to the point reach by continuing the vector above or below center of sphere
         double d = Math.sqrt(Math.abs(u.lengthSquared() - Math.pow(tm,2)));
-        //Calulates distance from intersection ppint to middle of sphere on ray
+        //Calculates distance from intersection point to middle of sphere on ray
         double th = Math.sqrt(Math.abs(Math.pow(radius,2) - Math.pow(d,2)));
         //Calculate distance to first point
         double t1 = tm - th;
@@ -77,12 +77,12 @@ public class Sphere extends RadialGeometry{
         double t2 = tm + th;
         //Calculate first intersection point
         Point p1 = null;
-        if (alignZero(t1) > 0){
+        if (alignZero(t1) > 0  && alignZero(t1 - maxDistance) <= 0){
             p1 = ray.getPoint(t1);
         }
         //Calculate second intersection point
         Point p2 = null;
-        if (alignZero(t2) > 0) {
+        if (alignZero(t2) > 0 && alignZero(t2 - maxDistance) <= 0) {
             p2 = ray.getPoint(t2);
         }
 

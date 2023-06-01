@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 import static primitives.Util.*;
 
@@ -68,7 +69,7 @@ public class Plane extends Geometry{
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         //Return null if ray starts in plane
         if (q0.equals(ray.getPoint())){
             return null;
@@ -76,7 +77,7 @@ public class Plane extends Geometry{
         //Calculate distance from start of ray to the plane
         double t = normal.dotProduct(q0.subtract(ray.getPoint())) / normal.dotProduct(ray.getDirection());
         //If the point is in front of the ray, return the point
-        if (alignZero(t) > 0 && Double.isFinite(t)){
+        if (alignZero(t) > 0 && Double.isFinite(t) && alignZero(t - maxDistance) <= 0){
             Point p = ray.getPoint().add(ray.getDirection().scale(t));
             return List.of(new GeoPoint(this,p));
         }

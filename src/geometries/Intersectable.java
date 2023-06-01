@@ -64,7 +64,7 @@ public abstract class Intersectable {
      * @param ray a ray which is intersecting the geometry
      * @return the points of intersection of ray with this geometry
      */
-    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
     /**
      * Find the points of intersection of a ray with the geometry
@@ -72,7 +72,7 @@ public abstract class Intersectable {
      * @return the points of intersection of ray with this geometry
      */
     public List<GeoPoint> findGeoIntersections(Ray ray){
-        return findGeoIntersectionsHelper(ray);
+        return findGeoIntersectionsHelper(ray, Double.POSITIVE_INFINITY);
     }
 
     /**
@@ -82,17 +82,6 @@ public abstract class Intersectable {
      * @return the points of intersection of ray with this geometry within the distance
      */
     public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance){
-        List<GeoPoint> pointList = findGeoIntersectionsHelper(ray);
-        List<GeoPoint> closePointsList = new LinkedList<>();
-
-        if (pointList == null) return closePointsList;
-
-        for (GeoPoint p: pointList){
-            if (alignZero(p.point.distance(ray.getPoint()) - maxDistance) <= 0){
-                closePointsList.add(p);
-            }
-        }
-
-        return closePointsList;
+        return findGeoIntersectionsHelper(ray, maxDistance);
     }
 }
