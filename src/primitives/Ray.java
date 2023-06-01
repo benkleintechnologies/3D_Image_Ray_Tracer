@@ -6,6 +6,7 @@ import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 
 import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * Class Ray is the basic class representing a ray starting at a point in Cartesian
@@ -108,6 +109,7 @@ public class Ray {
     public List<Ray> createRaysBeam(Point centerPoint, int numRays, double radius){
         List<Ray> rayList = new LinkedList<Ray>();
         rayList.add(this);                          // adding the original ray
+        if (radius == 0) return rayList;            // if radius is 0, we return the original ray
         List<Point> pointList = createRandomPoints(centerPoint, radius, numRays);
         for (Point p : pointList)             //from every point in the point list we make a ray
             rayList.add(new Ray(point, p.subtract(point).normalize()));
@@ -133,8 +135,8 @@ public class Ray {
             double d = Math.random() * radius * 2 - radius;
             x = alignZero(x * d);
             y = alignZero(y * d);
-            if (x != 0) p = p.add(vX.scale(x));
-            if (y != 0) p = p.add(vY.scale(y));
+            if (!isZero(x)) p = p.add(vX.scale(x));
+            if (!isZero(y)) p = p.add(vY.scale(y));
             randomPoints.add(p);
         }
         return randomPoints;
