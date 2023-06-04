@@ -18,7 +18,7 @@ public class RayTracerBasic extends RayTracerBase {
     //Maximal level of recursion for calculating the color
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     //Minimal transparency that's considered significant to be calculating
-    private static final double MIN_CALC_COLOR_K = 0.1;
+    private static final double MIN_CALC_COLOR_K = 0.01;
     //The starting transparency factor
     private static final double INITIAL_K = 1.0;
     //Boolean to determine whether to use adaptive supersampling
@@ -165,8 +165,8 @@ public class RayTracerBasic extends RayTracerBase {
         double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
         //Calculate reflected and refracted ray beams
-        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), 4, reflectedTargetSize);
-        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), 4, refractedTargetSize);
+        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), 100, reflectedTargetSize);
+        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), 100, refractedTargetSize);
 
         //Calculate the color of the average of reflected rays
         for (Ray r : reflectedRays) {
@@ -178,8 +178,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (Ray r : refractedRays) {
             refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
         }
-
-
+        
         //Add Reflected and refracted colors
         color = color.add(refractedColor);
 
