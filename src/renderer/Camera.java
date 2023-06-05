@@ -3,6 +3,7 @@ package renderer;
 import primitives.*;
 
 import java.util.MissingResourceException;
+import java.util.stream.IntStream;
 
 /**
  * Class Camera represents a camera in a 3D space.
@@ -21,6 +22,8 @@ public class Camera {
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    //Multithreading
+    private boolean threading = true;
 
     /**
      * Constructor for Camera. Throws IllegalArgumentException if vTo and vUp are not orthogonal
@@ -174,6 +177,16 @@ public class Camera {
     }
 
     /**
+     * Setter for threading
+     * @param threading boolean for whether to use multithreading
+     * @return this camera object
+     */
+    private Camera setThreading(boolean threading){
+        this.threading = threading;
+        return this;
+    }
+
+    /**
      * Render the image with the camera object
      */
     public ImageWriter renderImage(){
@@ -181,10 +194,23 @@ public class Camera {
             throw new MissingResourceException("Error: Null value", "Camera", null);
         }
 
-        for(int i = 0; i < imageWriter.getNy(); i++){
-            for(int j = 0; j < imageWriter.getNx(); j++){
-               imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+        if (!threading) {
+            //no threading
+            for (int i = 0; i < imageWriter.getNy(); i++) {
+                for (int j = 0; j < imageWriter.getNx(); j++) {
+                    imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+                }
             }
+        }else {
+            //Run on threads
+            Pixel.initialize(imageWriter.getNy(), imageWriter.getNx(), 100l);
+            IntStream.range(0, imageWriter.getNy()).parallel().forEach(i -> {
+                IntStream.range(0, imageWriter.getNx()).parallel().forEach(j -> {
+                    imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+                    Pixel.pixelDone();
+                    Pixel.printPixel();
+                });
+            });
         }
         return imageWriter;
     }
