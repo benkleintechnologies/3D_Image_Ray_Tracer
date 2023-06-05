@@ -25,7 +25,7 @@ public class ReflectionRefractionTests {
    /** Produce an image to show off glossy and diffusive effects */
    @Test
    public void glossyPicture(){
-      Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+      Camera camera = new Camera(new Point(-2000, 0, 10000), new Vector(0.2, 0, -1), new Vector(0, 1, 0)) //
               .setVPSize(150, 150).setVPDistance(1000);
       scene.setCamera(camera);
 
@@ -39,6 +39,7 @@ public class ReflectionRefractionTests {
               ).setEmission(new Color(109, 180, 255))
               .setMaterial(new Material().setKs(0.3).setKr(0.4).setGlossiness(20).setShininess(10)),
 
+              //One big spheres with two small spheres next to it
               new Sphere(200d, new Point(0, 0, 100)).setEmission(new Color(100, 50, 255)) //
                       .setMaterial(new Material().setKs(0.7).setKr(0.1).setGlossiness(40).setShininess(30)),
               new Sphere(100d, new Point(-300, 0, 100)).setEmission(new Color(255, 0, 0)) //
@@ -114,30 +115,36 @@ public class ReflectionRefractionTests {
 
               //Diffusive Glass
               new Polygon(
-                      new Point(0, -400, 400),
-                      new Point(0, 400, 400),
-                      new Point(600, 400, 400),
-                      new Point(600, -400, 400)
+                      new Point(0, -400, 500),
+                      new Point(0, 400, 500),
+                      new Point(600, 400, 500),
+                      new Point(600, -400, 500)
+              ).setEmission(new Color(50, 50, 50))
+                      .setMaterial(new Material().setKt(0.8).setBlur(0.025)),
+
+              //Reflective Glass
+              new Polygon(
+                      new Point(0, -400, -500),
+                      new Point(0, 400, -500),
+                      new Point(-600, 400, -500),
+                      new Point(-600, -400, -500)
               ).setEmission(new Color(70, 70, 70))
-                      .setMaterial(new Material().setKt(0.6).setBlur(0.08))
+                      .setMaterial(new Material().setKr(1.0).setGlossiness(10))
               );
-      scene.lights.add(
-              new SpotLight(new Color(1000, 1000, 1000), new Point(2000, 4000, 2000), new Vector(-.1, -1, -1))
-                      .setKl(0.0001).setKq(0.00005));
       scene.lights.add(new DirectionalLight(new Color(100, 100, 100), new Vector(0, -1, -1)));
-      scene.lights.add(new PointLight(new Color(500, 0, 0), new Point(1000, 1000, 2000)).setKl(0.0001).setKq(0.00005));
+      scene.lights.add(new PointLight(new Color(0, 500, 0), new Point(-200, -200, 1000)).setKl(0.0000001).setKq(0.000005));
       scene.lights.add(
               new SpotLight(new Color(1000, 1000, 0), new Point(1000, 2000, 0), new Vector(-.01, -.01, 0))
                       .setKl(0.00000001).setKq(0.00000005));
       scene.lights.add(
                new SpotLight(new Color(0, 1000, 1000), new Point(-1000, 2000, 0), new Vector(.01, -.01, 0))
                        .setKl(0.000001).setKq(0.000005));
-       scene.lights.add(
+      scene.lights.add(
                new SpotLight(new Color(1000, 1000, 1000), new Point(-600, 2000, 0), new Vector(0.001, -1, 0))
                        .setKl(0.000001).setKq(0.000005));
 
       camera.setImageWriter(new ImageWriter("GlossyAndDiffusiveImage", 500, 500)) //
-              .setRayTracer(new RayTracerBasic(scene).setSS(true)) //
+              .setRayTracer(new RayTracerBasic(scene).setSS(true).setNumRays(80)) //
               .renderImage() //
               .writeToImage();
    }

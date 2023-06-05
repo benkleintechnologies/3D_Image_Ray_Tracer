@@ -16,13 +16,15 @@ import static primitives.Util.*;
  */
 public class RayTracerBasic extends RayTracerBase {
     //Maximal level of recursion for calculating the color
-    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final int MAX_CALC_COLOR_LEVEL = 5;
     //Minimal transparency that's considered significant to be calculating
     private static final double MIN_CALC_COLOR_K = 0.01;
     //The starting transparency factor
     private static final double INITIAL_K = 1.0;
-    //Boolean to determine whether to use adaptive supersampling
+    //Boolean to determine whether to use adaptive super sampling
     private boolean SS = false;
+    //Number of rays for super sampling
+    private int numRays = 0;
 
     /**
      * Constructor for RayTracerBase
@@ -165,8 +167,8 @@ public class RayTracerBasic extends RayTracerBase {
         double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
         //Calculate reflected and refracted ray beams
-        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), 100, reflectedTargetSize);
-        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), 100, refractedTargetSize);
+        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), numRays, reflectedTargetSize);
+        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), numRays, refractedTargetSize);
 
         //Calculate the color of the average of reflected rays
         for (Ray r : reflectedRays) {
@@ -229,7 +231,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param SS the new value of the adaptive super sampling
      * @return the ray tracer
      */
-    public RayTracerBase setSS(boolean SS) {
+    public RayTracerBasic setSS(boolean SS) {
         this.SS = SS;
         return this;
     }
@@ -249,5 +251,15 @@ public class RayTracerBasic extends RayTracerBase {
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
         if (intersections == null) return null;
         return ray.findClosestGeoPoint(intersections);
+    }
+
+    /**
+     * Setter for number of rays of super sampling
+     * @param numRays number of rays
+     * @return this ray tracer
+     */
+    public RayTracerBasic setNumRays(int numRays) {
+        this.numRays = numRays;
+        return this;
     }
 }
