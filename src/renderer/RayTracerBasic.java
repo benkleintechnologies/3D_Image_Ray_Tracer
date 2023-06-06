@@ -4,6 +4,7 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 import geometries.Intersectable.GeoPoint;
 
@@ -160,29 +161,69 @@ public class RayTracerBasic extends RayTracerBase {
         Material material = gp.geometry.getMaterial();
         Ray reflectedRay = findReflectedRay(gp, v, n);
         Ray refractedRay = findRefractedRay(gp, v, n);
-        if(SS == false)
-            return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
+
         //Super sampling is on. Perform calculations for glossy and diffusion
         //Find target sizes for reflected and refracted rays
         double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
-        //Calculate reflected and refracted ray beams
-        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), numRays, reflectedTargetSize);
-        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), numRays, refractedTargetSize);
+        if (adaptiveSS == true) {
+            Color reflectedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR);
+            Color refractedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kT);
 
-        //Calculate the color of the average of reflected rays
-        for (Ray r : reflectedRays) {
-            color = color.add(calcColorGLobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
-        }
+            //Add Reflected and refracted colors
+            color = color.add(refractedColor).add(reflectedColor);
 
-        //calculate the color of the average of refracted rays
-        Color refractedColor= Color.BLACK;
-        for (Ray r : refractedRays) {
-            refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
+            return color;
+        } else if (SS == true){
+
+            //Calculate reflected and refracted ray beams
+            List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), numRays, reflectedTargetSize);
+            List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), numRays, refractedTargetSize);
+
+            //Calculate the color of the average of reflected rays
+            for (Ray r : reflectedRays) {
+                color = color.add(calcColorGLobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
+            }
+
+            //calculate the color of the average of refracted rays
+            Color refractedColor = Color.BLACK;
+            for (Ray r : refractedRays) {
+                refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
+            }
+
+            //Add Reflected and refracted colors
+            color = color.add(refractedColor);
+
+            return color;
         }
-        
-        //Add Reflected and refracted colors
-        color = color.add(refractedColor);
+        // Without any supersampling
+        return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
+
+    }
+
+    private Color calcAdaptiveSS(Ray ray, double sideLength, Double3 kX, int level, Double3 k){
+        List<Ray> rays = ray.createRaySquare(ray.getPoint().add(ray.getDirection().scale(100)), sideLength);
+        Color color = Color.BLACK;
+        List<Color> tempColors = new LinkedList<>();
+        //Add 4 colors to temporary list
+        for (Ray r : rays) {
+            tempColors.add(calcColorGLobalEffect(r, level, k, kX));
+        }
+        //Compare the colors
+        Color tempColor = tempColors.get(0);
+        for (Color c : tempColors) {
+            if (!c.equals(tempColor)){
+                //Split the square again
+                return calcAdaptiveSS(ray, sideLength/2, kX, level, k);
+            }
+        }
+        //All the same, so add color to list
+
+
+
+        for (Ray r : rays) {
+            color = color.add(calcColorGLobalEffect(r, level, k, kX).reduce(rays.size()));
+        }
 
         return color;
     }
