@@ -117,6 +117,27 @@ public class Ray {
     }
 
     /**
+     * Create ray square for adaptive super sampling
+     * @param centerPoint the point the ray is going towards
+     * @param sideLength the length of the sample area
+     * @return the list of rays
+     */
+    public List<Ray> createRaySquare(Point centerPoint, double sideLength){
+        List<Ray> rayList = new LinkedList<Ray>();
+        //rayList.add(this);                          // adding the original ray
+        Vector vX = direction.normalize().getNormal(), vY = vX.crossProduct(direction.normalize());
+        if (isZero(sideLength)) return rayList;            // if sideLength is 0, we return the original ray
+        List<Point> pointList = new LinkedList<Point>();
+        pointList.add(centerPoint.add(vX.scale(sideLength/2)).add(vY.scale(sideLength/2)));
+        pointList.add(centerPoint.add(vX.scale(-sideLength/2)).add(vY.scale(sideLength/2)));
+        pointList.add(centerPoint.add(vX.scale(sideLength/2)).add(vY.scale(-sideLength/2)));
+        pointList.add(centerPoint.add(vX.scale(-sideLength/2)).add(vY.scale(-sideLength/2)));
+        for (Point p : pointList)             //from every point in the point list we make a ray
+            rayList.add(new Ray(point, p.subtract(point).normalize()));
+        return rayList;
+    }
+
+    /**
      * Creates a list of random points in a circle around the center point on the plane defined by the direction vector
      * @param centerPoint center point of circle
      * @param radius radius of circle
@@ -141,6 +162,8 @@ public class Ray {
         }
         return randomPoints;
     }
+
+
 
     @Override
     public boolean equals(Object obj) {
