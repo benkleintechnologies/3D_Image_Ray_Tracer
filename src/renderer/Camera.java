@@ -87,6 +87,22 @@ public class Camera {
     }
 
     /**
+     * Get the width of a pixel in the View Plane
+     * @return the width of a pixel
+     */
+    public double getPixelWidth() {
+    	return width/imageWriter.getNx();
+    }
+
+    /**
+     * Get the height of a pixel in the View Plane
+     * @return the height of a pixel
+     */
+    public double getPixelHeight() {
+        return height/imageWriter.getNy();
+    }
+
+    /**
      * A set function for the View Plane distance
      * @param distance of the View Plane from the Camera
      * @return this camera object
