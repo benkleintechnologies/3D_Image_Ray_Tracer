@@ -28,8 +28,6 @@ public class RayTracerBasic extends RayTracerBase {
     private int numRays = 0;
     //Boolean to determine whether to use adaptive super sampling
     private boolean adaptiveSS = false;
-    //Maximum number of parts per side in adaptive SS
-    private int maxGridSize = 0;
 
     /**
      * Constructor for RayTracerBase
@@ -159,97 +157,106 @@ public class RayTracerBasic extends RayTracerBase {
      * @return color of the point
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
-        Color color = Color.BLACK;
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
         Ray reflectedRay = findReflectedRay(gp, v, n);
         Ray refractedRay = findRefractedRay(gp, v, n);
 
-        if (adaptiveSS == true) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
+        //Find target sizes for reflected and refracted rays
+        double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
+        double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
 
-        }else if (SS == true) { //Super sampling is on. Perform calculations for glossy and diffusion
-            return calcSuperSamplingColor(material, level, k, reflectedRay, refractedRay, gp);
+        if (adaptiveSS) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
+            Color reflectedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR, level, k);
+            Color refractedColor = calcAdaptiveSS(refractedRay, refractedTargetSize, material.kT, level, k);
+            //Add Reflected and refracted colors
+            return refractedColor.add(reflectedColor);
+
+        }else if (SS) { //Super sampling is on. Perform calculations for glossy and diffusion
+            return calcSuperSamplingColor(material, level, k, reflectedRay, reflectedTargetSize, refractedRay, refractedTargetSize);
         }
 
         return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
     }
 
     /**
-     * Calculates the color of the point, recursively, using super sampling
+     * Calculates the color of the point with global effects (reflection/refraction)
      * @param material the material of the geometry
      * @param level of recursion
      * @param k transparency factor
      * @param reflectedRay the reflected ray
+     * @param reflectedTargetSize the target size of the reflected ray
      * @param refractedRay the refracted ray
-     * @param gp the geoPoint
+     * @param refractedTargetSize the target size of the refracted ray
      * @return the color of the point
      */
-    private Color calcSuperSamplingColor(Material material, int level, Double3 k, Ray reflectedRay, Ray refractedRay, GeoPoint gp) {
+    private Color calcSuperSamplingColor(Material material, int level, Double3 k, Ray reflectedRay, double reflectedTargetSize, Ray refractedRay, double refractedTargetSize) {
         Color color = Color.BLACK;
-        //Find target sizes for reflected and refracted rays
-        double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
-        double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
-        if (adaptiveSS == true) {
-            Color reflectedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR);
-            Color refractedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kT);
 
-            //Add Reflected and refracted colors
-            color = color.add(refractedColor).add(reflectedColor);
+        //Calculate reflected and refracted ray beams
+        List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), numRays, reflectedTargetSize);
+        List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), numRays, refractedTargetSize);
 
-            return color;
-        } else if (SS == true){
-
-            //Calculate reflected and refracted ray beams
-            List<Ray> reflectedRays = reflectedRay.createRaysBeam(reflectedRay.getPoint().add(reflectedRay.getDirection().scale(100)), numRays, reflectedTargetSize);
-            List<Ray> refractedRays = refractedRay.createRaysBeam(refractedRay.getPoint().add(refractedRay.getDirection().scale(100)), numRays, refractedTargetSize);
-
-            //Calculate the color of the average of reflected rays
-            for (Ray r : reflectedRays) {
-                color = color.add(calcColorGLobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
-            }
-
-            //calculate the color of the average of refracted rays
-            Color refractedColor = Color.BLACK;
-            for (Ray r : refractedRays) {
-                refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
-            }
-
-            //Add Reflected and refracted colors
-            color = color.add(refractedColor);
-
-            return color;
+        //Calculate the color of the average of reflected rays
+        for (Ray r : reflectedRays) {
+            color = color.add(calcColorGLobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
         }
-        // Without any supersampling
-        return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
 
+        //calculate the color of the average of refracted rays
+        Color refractedColor = Color.BLACK;
+        for (Ray r : refractedRays) {
+            refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
+        }
+
+        //Add Reflected and refracted colors
+        color = color.add(refractedColor);
+
+        return color;
     }
 
+    /**
+     * Calculates the color of the point with global effects (reflection/refraction) using adaptive super sampling
+     * @param ray the ray to calculate the color for
+     * @param sideLength the side length of the square
+     * @param kX the transparency factor
+     * @param level of recursion
+     * @param k transparency factor
+     * @return the color of the point
+     */
     private Color calcAdaptiveSS(Ray ray, double sideLength, Double3 kX, int level, Double3 k){
         List<Ray> rays = ray.createRaySquare(ray.getPoint().add(ray.getDirection().scale(100)), sideLength);
-        Color color = Color.BLACK;
         List<Color> tempColors = new LinkedList<>();
         //Add 4 colors to temporary list
         for (Ray r : rays) {
             tempColors.add(calcColorGLobalEffect(r, level, k, kX));
         }
+
+        // Stop at maximum recursion level
+        if (level <= 1) {
+            // return average of the four colors
+            return tempColors.get(0).add(tempColors.get(1), tempColors.get(2), tempColors.get(3)).reduce(4);
+        }
+
         //Compare the colors
         Color tempColor = tempColors.get(0);
+        boolean different = false;
         for (Color c : tempColors) {
             if (!c.equals(tempColor)){
-                //Split the square again
-                return calcAdaptiveSS(ray, sideLength/2, kX, level, k);
+                different = true;
+                break;
             }
         }
-        //All the same, so add color to list
 
+        //If the colors are different, divide the square into 4 and calculate the color of each square
+        if (different)
+            return calcAdaptiveSS(rays.get(0), sideLength/2, kX, level, k).add(
+                    calcAdaptiveSS(rays.get(1), sideLength/2, kX, level, k),
+                    calcAdaptiveSS(rays.get(2), sideLength/2, kX, level, k),
+                    calcAdaptiveSS(rays.get(3), sideLength/2, kX, level, k)).reduce(4);
 
-
-        for (Ray r : rays) {
-            color = color.add(calcColorGLobalEffect(r, level, k, kX).reduce(rays.size()));
-        }
-
-        return color;
+        //All the same, so return the color
+        return tempColor;
     }
 
     /**
