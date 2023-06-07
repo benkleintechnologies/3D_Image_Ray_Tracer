@@ -144,7 +144,7 @@ public class ReflectionRefractionTests {
                        .setKl(0.000001).setKq(0.000005));
 
       camera.setImageWriter(new ImageWriter("GlossyAndDiffusiveImage", 500, 500)) //
-              .setRayTracer(new RayTracerBasic(scene).setSS(true).setNumRays(80)) //
+              .setRayTracer(new RayTracerBasic(scene).setAdaptiveSS(true).setNumRays(4)) //
               .renderImage() //
               .writeToImage();
    }
@@ -175,7 +175,7 @@ public class ReflectionRefractionTests {
    @Test
    public void twoSpheresOnMirrors() {
       Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-         .setVPSize(2500, 2500).setVPDistance(10000); //
+         .setVPSize(2500, 2500).setVPDistance(10000).setThreading(true); //
       scene.setCamera(camera);
 
       scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.1)));
@@ -200,7 +200,7 @@ public class ReflectionRefractionTests {
 
       ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored", 500, 500);
       camera.setImageWriter(imageWriter) //
-         .setRayTracer(new RayTracerBasic(scene).setSS(true)) //
+         .setRayTracer(new RayTracerBasic(scene).setAdaptiveSS(true).setNumRays(3)) //
          .renderImage() //
          .writeToImage();
    }

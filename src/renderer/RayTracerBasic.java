@@ -167,17 +167,28 @@ public class RayTracerBasic extends RayTracerBase {
         double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
 
-        if (adaptiveSS) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
-            Color reflectedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR, level, k);
-            Color refractedColor = calcAdaptiveSS(refractedRay, refractedTargetSize, material.kT, level, k);
-            //Add Reflected and refracted colors
-            return refractedColor.add(reflectedColor);
+        if (adaptiveSS && (!isZero(reflectedTargetSize) || !isZero(refractedTargetSize))) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
+            //Normlaize the side length
+            if (reflectedTargetSize > scene.getCamera().getPixelWidth() && !isZero(scene.getCamera().getPixelWidth())){
+                reflectedTargetSize = scene.getCamera().getPixelWidth();
+            }
 
+            if (!isZero(reflectedTargetSize) && !isZero(refractedTargetSize)){
+                //Both Reflection and Refraction
+                Color reflectedColor = calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR, level, k);
+                Color refractedColor = calcAdaptiveSS(refractedRay, refractedTargetSize, material.kT, level, k);
+                return refractedColor.add(reflectedColor);
+            }else if (!isZero(refractedTargetSize)){
+                //Just Refraction
+                return calcAdaptiveSS(refractedRay, refractedTargetSize, material.kT, level, k);
+            }
+            //Just Reflection
+            return calcAdaptiveSS(reflectedRay, reflectedTargetSize, material.kR, level, k);
         }else if (SS) { //Super sampling is on. Perform calculations for glossy and diffusion
             return calcSuperSamplingColor(material, level, k, reflectedRay, reflectedTargetSize, refractedRay, refractedTargetSize);
         }
 
-        return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
+        return calcColorGlobalEffect(reflectedRay, level, k, material.kR).add(calcColorGlobalEffect(refractedRay, level, k, material.kT));
     }
 
     /**
@@ -200,13 +211,13 @@ public class RayTracerBasic extends RayTracerBase {
 
         //Calculate the color of the average of reflected rays
         for (Ray r : reflectedRays) {
-            color = color.add(calcColorGLobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
+            color = color.add(calcColorGlobalEffect(r, level, k, material.kR).reduce(reflectedRays.size()));
         }
 
         //calculate the color of the average of refracted rays
         Color refractedColor = Color.BLACK;
         for (Ray r : refractedRays) {
-            refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
+            refractedColor = refractedColor.add(calcColorGlobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
         }
 
         //Add Reflected and refracted colors
@@ -226,14 +237,16 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcAdaptiveSS(Ray ray, double sideLength, Double3 kX, int level, Double3 k){
         List<Ray> rays = ray.createRaySquare(ray.getPoint().add(ray.getDirection().scale(100)), sideLength);
+
         List<Color> tempColors = new LinkedList<>();
         //Add 4 colors to temporary list
         for (Ray r : rays) {
-            tempColors.add(calcColorGLobalEffect(r, level, k, kX));
+            Color temp = calcColorGlobalEffect(r, level, k, kX);
+            tempColors.add(temp);
         }
 
-        // Stop at maximum recursion level
-        if (level <= 1) {
+        // Stop at maximum recursion level or side is too small
+        if (level <= 1 || sideLength < scene.getCamera().getPixelWidth()/numRays) {
             // return average of the four colors
             return tempColors.get(0).add(tempColors.get(1), tempColors.get(2), tempColors.get(3)).reduce(4);
         }
@@ -250,10 +263,10 @@ public class RayTracerBasic extends RayTracerBase {
 
         //If the colors are different, divide the square into 4 and calculate the color of each square
         if (different)
-            return calcAdaptiveSS(rays.get(0), sideLength/2, kX, level, k).add(
-                    calcAdaptiveSS(rays.get(1), sideLength/2, kX, level, k),
-                    calcAdaptiveSS(rays.get(2), sideLength/2, kX, level, k),
-                    calcAdaptiveSS(rays.get(3), sideLength/2, kX, level, k)).reduce(4);
+            return calcAdaptiveSS(rays.get(0), sideLength/2, kX, level-1, k).add(
+                    calcAdaptiveSS(rays.get(1), sideLength/2, kX, level-1, k),
+                    calcAdaptiveSS(rays.get(2), sideLength/2, kX, level-1, k),
+                    calcAdaptiveSS(rays.get(3), sideLength/2, kX, level-1, k)).reduce(4);
 
         //All the same, so return the color
         return tempColor;
@@ -267,7 +280,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param kx reflection or transparency coefficient
      * @return color of the point
      */
-    private Color calcColorGLobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
+    private Color calcColorGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
         Double3 kkx = k.product(kx);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
@@ -305,6 +318,16 @@ public class RayTracerBasic extends RayTracerBase {
      */
     public RayTracerBasic setSS(boolean SS) {
         this.SS = SS;
+        return this;
+    }
+
+    /**
+     * Setter for the adaptive super sampling
+     * @param adaptiveSS the new value of the adaptive super sampling
+     * @return the ray tracer
+     */
+    public RayTracerBasic setAdaptiveSS(boolean adaptiveSS) {
+        this.adaptiveSS = adaptiveSS;
         return this;
     }
 
