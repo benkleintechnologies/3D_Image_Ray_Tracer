@@ -25,6 +25,10 @@ public class RayTracerBasic extends RayTracerBase {
     private boolean SS = false;
     //Number of rays for super sampling
     private int numRays = 0;
+    //Boolean to determine whether to use adaptive super sampling
+    private boolean adaptiveSS = false;
+    //Maximum number of parts per side in adaptive SS
+    private int maxGridSize = 0;
 
     /**
      * Constructor for RayTracerBase
@@ -160,9 +164,28 @@ public class RayTracerBasic extends RayTracerBase {
         Material material = gp.geometry.getMaterial();
         Ray reflectedRay = findReflectedRay(gp, v, n);
         Ray refractedRay = findRefractedRay(gp, v, n);
-        if(SS == false)
-            return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
-        //Super sampling is on. Perform calculations for glossy and diffusion
+
+        if (adaptiveSS == true) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
+
+        }else if (SS == true) { //Super sampling is on. Perform calculations for glossy and diffusion
+            return calcSuperSamplingColor(material, level, k, reflectedRay, refractedRay, gp);
+        }
+
+        return calcColorGLobalEffect(reflectedRay, level, k, material.kR).add(calcColorGLobalEffect(refractedRay, level, k, material.kT));
+    }
+
+    /**
+     * Calculates the color of the point, recursively, using super sampling
+     * @param material the material of the geometry
+     * @param level of recursion
+     * @param k transparency factor
+     * @param reflectedRay the reflected ray
+     * @param refractedRay the refracted ray
+     * @param gp the geoPoint
+     * @return the color of the point
+     */
+    private Color calcSuperSamplingColor(Material material, int level, Double3 k, Ray reflectedRay, Ray refractedRay, GeoPoint gp) {
+        Color color = Color.BLACK;
         //Find target sizes for reflected and refracted rays
         double reflectedTargetSize = material.nGlossiness * gp.point.distance(scene.getCamera().getP0()) / 10000;
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
@@ -180,11 +203,16 @@ public class RayTracerBasic extends RayTracerBase {
         for (Ray r : refractedRays) {
             refractedColor = refractedColor.add(calcColorGLobalEffect(r, level, k, material.kT).reduce(refractedRays.size()));
         }
-        
+
         //Add Reflected and refracted colors
         color = color.add(refractedColor);
 
         return color;
+    }
+
+    private Color calcAdaptiveSSColor(){
+        //TODO:Implement this function
+        return Color.BLACK;
     }
 
     /**
