@@ -181,7 +181,7 @@ public class Camera {
      * @param threading boolean for whether to use multithreading
      * @return this camera object
      */
-    private Camera setThreading(boolean threading){
+    public Camera setThreading(boolean threading){
         this.threading = threading;
         return this;
     }
