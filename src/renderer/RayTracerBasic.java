@@ -170,7 +170,7 @@ public class RayTracerBasic extends RayTracerBase {
         double refractedTargetSize = material.nBlur * gp.point.distance(scene.getCamera().getP0());
 
         if (adaptiveSS && (!isZero(reflectedTargetSize) || !isZero(refractedTargetSize))) { //Adaptive super sampling is on. Perform calculations for glossy and diffusion)
-            //Normlaize the side length
+            //Normalize the side length
             if (reflectedTargetSize > scene.getCamera().getPixelWidth() && !isZero(scene.getCamera().getPixelWidth())){
                 reflectedTargetSize = scene.getCamera().getPixelWidth();
             }
