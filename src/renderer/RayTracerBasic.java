@@ -28,6 +28,8 @@ public class RayTracerBasic extends RayTracerBase {
     private int numRays = 0;
     //Boolean to determine whether to use adaptive super sampling
     private boolean adaptiveSS = false;
+    //Adaptive super sampling max grid size
+    private int maxGridSize = 1;
 
     /**
      * Constructor for RayTracerBase
@@ -246,7 +248,7 @@ public class RayTracerBasic extends RayTracerBase {
         }
 
         // Stop at maximum recursion level or side is too small
-        if (level <= 1 || sideLength < scene.getCamera().getPixelWidth()/numRays) {
+        if (level <= 1 || sideLength < scene.getCamera().getPixelWidth()/maxGridSize) {
             // return average of the four colors
             return tempColors.get(0).add(tempColors.get(1), tempColors.get(2), tempColors.get(3)).reduce(4);
         }
@@ -355,6 +357,11 @@ public class RayTracerBasic extends RayTracerBase {
      */
     public RayTracerBasic setNumRays(int numRays) {
         this.numRays = numRays;
+        return this;
+    }
+
+    public RayTracerBasic setMaxGridSize(int maxGridSize) {
+        this.maxGridSize = maxGridSize;
         return this;
     }
 }
